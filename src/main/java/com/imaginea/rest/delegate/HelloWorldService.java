@@ -11,6 +11,7 @@ public class HelloWorldService {
 	@GET
 	@Path("/{param}")
 	public Response getMsg(@PathParam("param") String msg) {
+	
 		String output = "Jersey say : " + msg;
 		
 		//AnnotatedMethod method= new AnnotatedMethod(getMsg("Spring"));
