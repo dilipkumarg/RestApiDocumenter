@@ -4,19 +4,19 @@ import java.util.List;
 
 public class Models {
 	
-	private List<ObjectsList> returnTypeList;
+	private List<ClassDetails> returnTypeList;
 
 	/**
 	 * @return the returnTypeList
 	 */
-	public List<ObjectsList> getReturnTypeList() {
+	public List<ClassDetails> getReturnTypeList() {
 		return returnTypeList;
 	}
 
 	/**
 	 * @param returnTypeList the returnTypeList to set
 	 */
-	public void setReturnTypeList(List<ObjectsList> returnTypeList) {
+	public void setReturnTypeList(List<ClassDetails> returnTypeList) {
 		this.returnTypeList = returnTypeList;
 	}
 	

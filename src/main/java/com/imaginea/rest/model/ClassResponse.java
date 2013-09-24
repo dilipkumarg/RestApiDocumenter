@@ -15,7 +15,7 @@ public class ClassResponse {
 	
 //private Models modelList;
 	
-	private List<ObjectsList> modelList;
+	private List<ClassDetails> modelList;
 
 	/**
 	 * @return the resourcePath
@@ -77,14 +77,14 @@ public class ClassResponse {
 	/**
 	 * @return the modelList
 	 */
-	public List<ObjectsList> getModelList() {
+	public List<ClassDetails> getModelList() {
 		return modelList;
 	}
 
 	/**
 	 * @param modelList the modelList to set
 	 */
-	public void setModelList(List<ObjectsList> modelList) {
+	public void setModelList(List<ClassDetails> modelList) {
 		this.modelList = modelList;
 	}
 
