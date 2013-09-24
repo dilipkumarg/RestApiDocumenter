@@ -7,6 +7,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.core.MediaType;
+
 import com.google.gson.Gson;
 import com.imaginea.rest.model.ClassResponse;
 import com.imaginea.rest.model.MethodOperations;
@@ -43,6 +45,22 @@ public class ApiDocumenter {
 			mOperations.setMethod(srm.getHttpMethod());
 			mOperations.setNickName(srm.getMethod().getName());
 			mOperations.setType(srm.getReturnType().getSimpleName());
+
+			if (!srm.getSupportedOutputTypes().isEmpty()) {
+				List<String> outTypes = new ArrayList<String>();
+				for (MediaType type : srm.getSupportedOutputTypes()) {
+					outTypes.add(type.getType() + "/" + type.getSubtype());
+				}
+				mOperations.setProduces(outTypes);
+			}
+
+			if (!srm.getSupportedInputTypes().isEmpty()) {
+				List<String> inTypes = new ArrayList<String>();
+				for (MediaType type : srm.getSupportedInputTypes()) {
+					inTypes.add(type.getType() + "/" + type.getSubtype());
+				}
+				mOperations.setConsumes(inTypes);
+			}
 
 			List<MethodParameters> params = new ArrayList<MethodParameters>();
 			for (Parameter param : srm.getParameters()) {
