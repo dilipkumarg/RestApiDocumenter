@@ -16,16 +16,12 @@ import com.sun.jersey.api.model.AbstractSubResourceMethod;
 import com.sun.jersey.api.model.Parameter;
 import com.sun.jersey.server.impl.modelapi.annotation.IntrospectionModeller;
 
-/**
- * @author sandeep-t
- * @param <T>
- * 
- */
 public class ApiDocumenter {
 
 	public String getJSONResponse(Class classl) {
 
-		AbstractResource resource = IntrospectionModeller.createResource(classl);
+		AbstractResource resource = IntrospectionModeller
+				.createResource(classl);
 
 		ClassResponse response = new ClassResponse();
 
@@ -47,11 +43,15 @@ public class ApiDocumenter {
 			List<MethodParameters> params = new ArrayList<MethodParameters>();
 			for (Parameter param : srm.getParameters()) {
 				MethodParameters mParameters = new MethodParameters();
-				mParameters.setName(param.getSourceName());
-				mParameters.setParamType(param.getAnnotation().annotationType().getSimpleName());
-				// we can decide required if it is a annonation
-				mParameters.setRequired(param.getAnnotation().annotationType().isAnnotation());
-				mParameters.setType(param.getParameterType().toString());
+				mParameters.setParamType(param.getSource().name());
+				mParameters.setType(param.getParameterClass().getSimpleName());
+				// if annotation is not present means it is a body param
+				if (param.getAnnotation() != null) {
+					// we can decide required if it is a annonation
+					mParameters.setRequired(param.getAnnotation()
+							.annotationType().isAnnotation());
+					mParameters.setName(param.getSourceName());
+				}
 				params.add(mParameters);
 			}
 			mOperations.setParameterList(params);
