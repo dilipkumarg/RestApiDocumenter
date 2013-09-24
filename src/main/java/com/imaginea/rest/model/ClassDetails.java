@@ -5,7 +5,7 @@ import java.util.List;
 public class ClassDetails {
 	
 	String className;
-	List<PropertyDiscriptor> propertiesList;
+	List<ModelPropertyDiscriptor> propertiesList;
 	/**
 	 * @return the className
 	 */
@@ -21,13 +21,13 @@ public class ClassDetails {
 	/**
 	 * @return the propertiesList
 	 */
-	public List<PropertyDiscriptor> getPropertiesList() {
+	public List<ModelPropertyDiscriptor> getPropertiesList() {
 		return propertiesList;
 	}
 	/**
 	 * @param propertiesList the propertiesList to set
 	 */
-	public void setPropertiesList(List<PropertyDiscriptor> propertiesList) {
+	public void setPropertiesList(List<ModelPropertyDiscriptor> propertiesList) {
 		this.propertiesList = propertiesList;
 	}
 	

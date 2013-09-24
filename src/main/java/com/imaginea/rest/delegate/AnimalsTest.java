@@ -5,6 +5,7 @@ package com.imaginea.rest.delegate;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -78,9 +79,6 @@ public class AnimalsTest {
 
 	class Cat {
 		
-		public int id;
-		public String name;
-		public String petname;
 	}
 
 	@Path("/animals")
@@ -101,12 +99,14 @@ public class AnimalsTest {
 		public Cat getCat() {
 			return null;
 		}
-		@GET
-		@Produces(MediaType.APPLICATION_JSON)
-		@Path("cat")
-		public String getStringAsData() {
+		
+		
+		@POST
+		@Path("testing")
+		public String getsCat() {
 			return null;
 		}
+		
 
 	}
 }
