@@ -29,11 +29,13 @@ public class AnimalsTest {
 	public static void main(String[] args) {
 		ApiDocumenter apiDoc = new ApiDocumenter();
 		System.out.println(apiDoc.getJSONResponse(AnimalResource.class));
-		/*AbstractResource resource = IntrospectionModeller.createResource(AnimalResource.class);
+		
+	/*	AbstractResource resource = IntrospectionModeller.createResource(AnimalResource.class);
 
 		String str = AnimalResource.class.toString();
 
 		System.out.println("CLASS " + str.getClass());
+		
 		System.out.println("Path is " + resource.getPath().getValue());
 
 		String uriPrefix = resource.getPath().getValue();
@@ -45,20 +47,37 @@ public class AnimalsTest {
 			String uri = uriPrefix + "/" + srm.getPath().getValue();
 			System.out.println(srm.getHttpMethod() + " at the path " + uri + " return "
 							+ srm.getReturnType().getSimpleName());
+			Field[] arr=srm.getReturnType().getFields();
+			//Field[] arr=srm.getReturnType().getClass().getFields();
+			for(int i=0; i<arr.length;i++){
+				System.out.println(arr[i].getName());
+				
+				System.out.println(arr[i].getType().getSimpleName());
+			}
+			
+			
 			System.out.println(srm.getMethod().getName());
 			if(srm.getParameters().size() > 0) {
 				
 				System.out.println(srm.getParameters().get(0).getAnnotation().annotationType().getSimpleName());
 			}
 
-		}
-*/
+		}*/
+
 	}
 
 	class Dog {
+		
+		public int id;
+		public String name;
+		public String petname;
 	}
 
 	class Cat {
+		
+		public int id;
+		public String name;
+		public String petname;
 	}
 
 	@Path("/animals")
@@ -75,6 +94,12 @@ public class AnimalsTest {
 		@Produces(MediaType.APPLICATION_JSON)
 		@Path("cat")
 		public Cat getCat() {
+			return null;
+		}
+		@GET
+		@Produces(MediaType.APPLICATION_JSON)
+		@Path("cat")
+		public String getStringAsData() {
 			return null;
 		}
 

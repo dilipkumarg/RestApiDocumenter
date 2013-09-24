@@ -13,7 +13,9 @@ public class ClassResponse {
 	
 	private List<MethodsResponse> responseList;
 	
-	private List<Models> modelList;
+//private Models modelList;
+	
+	private List<ObjectsList> modelList;
 
 	/**
 	 * @return the resourcePath
@@ -57,20 +59,7 @@ public class ClassResponse {
 		this.responseList = responseList;
 	}
 
-	/**
-	 * @return the modelList
-	 */
-	public List<Models> getModelList() {
-		return modelList;
-	}
-
-	/**
-	 * @param modelList the modelList to set
-	 */
-	public void setModelList(List<Models> modelList) {
-		this.modelList = modelList;
-	}
-
+	
 	/**
 	 * @return the consumes
 	 */
@@ -84,11 +73,20 @@ public class ClassResponse {
 	public void setConsumes(String consumes) {
 		this.consumes = consumes;
 	}
-	
-	
-	
-	
-	
-	
+
+	/**
+	 * @return the modelList
+	 */
+	public List<ObjectsList> getModelList() {
+		return modelList;
+	}
+
+	/**
+	 * @param modelList the modelList to set
+	 */
+	public void setModelList(List<ObjectsList> modelList) {
+		this.modelList = modelList;
+	}
+
 	
 }
