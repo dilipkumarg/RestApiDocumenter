@@ -1,6 +1,7 @@
 package com.imaginea.rest.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class ClassResponseEntity {
 
@@ -15,7 +16,7 @@ public class ClassResponseEntity {
 	
 //private Models modelList;
 	
-	private List<ClassDetails> modelList;
+	Map<String,ClassDetails> modelList;
 
 	/**
 	 * @return the resourcePath
@@ -77,16 +78,18 @@ public class ClassResponseEntity {
 	/**
 	 * @return the modelList
 	 */
-	public List<ClassDetails> getModelList() {
+	public Map<String, ClassDetails> getModelList() {
 		return modelList;
 	}
 
 	/**
 	 * @param modelList the modelList to set
 	 */
-	public void setModelList(List<ClassDetails> modelList) {
+	public void setModelList(Map<String, ClassDetails> modelList) {
 		this.modelList = modelList;
 	}
+
+	
 
 	
 }

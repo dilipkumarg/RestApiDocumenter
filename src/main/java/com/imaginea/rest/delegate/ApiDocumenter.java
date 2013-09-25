@@ -5,17 +5,19 @@ package com.imaginea.rest.delegate;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
 
-import com.google.gson.Gson;
 import com.imaginea.rest.model.ClassDetails;
 import com.imaginea.rest.model.ClassResponseEntity;
 import com.imaginea.rest.model.MethodOperations;
 import com.imaginea.rest.model.MethodParameters;
 import com.imaginea.rest.model.MethodResponse;
 import com.imaginea.rest.model.ModelPropertyDiscriptor;
+import com.imaginea.rest.util.JsonUtil;
 import com.sun.jersey.api.model.AbstractResource;
 import com.sun.jersey.api.model.AbstractSubResourceMethod;
 import com.sun.jersey.api.model.Parameter;
@@ -41,16 +43,24 @@ public class ApiDocumenter {
 
 		List<MethodResponse> methodResponseList = new ArrayList<MethodResponse>();
 
-		List<ClassDetails> classDetailList = new ArrayList<ClassDetails>();
+	
+		Map<String,ClassDetails> map= new HashMap<String,ClassDetails>();
 		
 		for (AbstractSubResourceMethod subResourceModel : absResponse.getSubResourceMethods()) {
-			//MethodResponse mResponse=getMethodResponse(absResponse, classDetailList, subResourceModel);
-			methodResponseList.add(getMethodResponse(absResponse, classDetailList, subResourceModel));
+	
+			methodResponseList.add(getMethodResponse(absResponse, subResourceModel));
+			Field[] fieldsInReturnType = subResourceModel.getReturnType().getFields();
+
+			if (fieldsInReturnType.length > 0) {
+				
+				ClassDetails detail=getClassDetails(subResourceModel.getReturnType().getSimpleName(), fieldsInReturnType);
+				map.put(detail.getClassName(), detail);
+			}
 		}
 		response.setResponseList(methodResponseList);
-		response.setModelList(classDetailList);
-		return new Gson().toJson(response, ClassResponseEntity.class);
-
+		response.setModelList(map);
+	
+		return JsonUtil.toJsonString(response).toString();
 	}
 
 	/**
@@ -60,7 +70,7 @@ public class ApiDocumenter {
 	 * @param subResourceModel
 	 */
 	private MethodResponse getMethodResponse(AbstractResource absResponse,
-					List<ClassDetails> classDetailList, AbstractSubResourceMethod subResourceModel) {
+					 AbstractSubResourceMethod subResourceModel) {
 		MethodResponse mResponse = new MethodResponse();
 		MethodOperations mOperations = null;
 		mResponse.setPath(absResponse.getPath().getValue() + "/" + subResourceModel.getPath().getValue());
@@ -69,16 +79,11 @@ public class ApiDocumenter {
 		for (Parameter param : subResourceModel.getParameters()) {
 			paramsList.add(getMethodParameters(param));
 		}
-		Field[] fieldsInReturnType = subResourceModel.getReturnType().getFields();
-
-		if (fieldsInReturnType.length > 0) {
-			
-			classDetailList.add(getClassDetails(subResourceModel.getReturnType().getSimpleName(), fieldsInReturnType));
-		}
+		
 		mOperations = getMethodOperationDetails(subResourceModel, paramsList);
 		mResponse.setOperations(mOperations);
 		return mResponse;
-		//methodResponseList.add(mResponse);
+		
 	}
 
 	/**
@@ -140,13 +145,17 @@ public class ApiDocumenter {
 	private ClassDetails getClassDetails(String className, Field[] fieldsInReturnType) {
 	
 		ClassDetails classDetail = new ClassDetails();
-		List<ModelPropertyDiscriptor> propDescList = new ArrayList<ModelPropertyDiscriptor>();
+	
 		classDetail.setClassName(className);
+		Map<String,ModelPropertyDiscriptor> modelPropertyMap= new HashMap<String,ModelPropertyDiscriptor>();
 		for (int i = 0; i < fieldsInReturnType.length; i++) {
+
 			ModelPropertyDiscriptor desc = getFieldsDescription(fieldsInReturnType[i]);
-			propDescList.add(desc);
+			
+			modelPropertyMap.put(fieldsInReturnType[i].getName(), desc);
+			
 		}
-		classDetail.setPropertiesList(propDescList);
+		classDetail.setPropertiesList(modelPropertyMap);
 		return classDetail;
 		
 	}
@@ -158,10 +167,12 @@ public class ApiDocumenter {
 	 * @return
 	 */
 	private ModelPropertyDiscriptor getFieldsDescription(Field field) {
+		
 		ModelPropertyDiscriptor desc = new ModelPropertyDiscriptor();
 		desc.setPropertyName(field.getName());
 		desc.setType(field.getType().getSimpleName());
 		desc.setDescription(field.getName() + " should be of  "+field.getType().getSimpleName() + " type ");
+		
 		return desc;
 	}
 

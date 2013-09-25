@@ -1,11 +1,12 @@
 package com.imaginea.rest.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class ClassDetails {
 	
 	String className;
-	List<ModelPropertyDiscriptor> propertiesList;
+	Map<String,ModelPropertyDiscriptor> propertiesList;
 	/**
 	 * @return the className
 	 */
@@ -21,15 +22,19 @@ public class ClassDetails {
 	/**
 	 * @return the propertiesList
 	 */
-	public List<ModelPropertyDiscriptor> getPropertiesList() {
+	public Map<String, ModelPropertyDiscriptor> getPropertiesList() {
 		return propertiesList;
 	}
 	/**
 	 * @param propertiesList the propertiesList to set
 	 */
-	public void setPropertiesList(List<ModelPropertyDiscriptor> propertiesList) {
+	public void setPropertiesList(Map<String, ModelPropertyDiscriptor> propertiesList) {
 		this.propertiesList = propertiesList;
 	}
+	
+	
+	
+	
 	
 
 }
