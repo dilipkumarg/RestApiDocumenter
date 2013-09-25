@@ -15,6 +15,11 @@ import com.imaginea.rest.util.JsonUtil;
 
 @Path("/apidocs")
 public class ApiDocumenter {
+	private ClassDocumenter apiDoc;
+
+	public ApiDocumenter() {
+		apiDoc = new ClassDocumenter();
+	}
 
 	/**
 	 * This is the base function for Api docs, it will fetch the list of all
@@ -41,10 +46,8 @@ public class ApiDocumenter {
 	@GET
 	@Path("/{class}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getClassInfo(@PathParam("class") String className)
-			throws IOException, ClassNotFoundException {
-		ClassDocumenter apiDoc = new ClassDocumenter();
-		return JsonUtil.toJsonString(apiDoc.extractClassInfo(className))
-				.toString();
+	public String getClassInfo(@PathParam("class") String className) throws IOException, ClassNotFoundException {
+		// todo extract to class variable
+		return JsonUtil.toJson(apiDoc.extractClassInfo(className)).toString();
 	}
 }
