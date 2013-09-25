@@ -5,7 +5,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 @Path("/dog")
 public class Dog {
@@ -37,16 +36,16 @@ public class Dog {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{dogname}")
-	public Response getDogDesc(@PathParam("dogname") String dogName) {
-		String output = dogDesc + "<br>sent Data:" + dogName;
-		return Response.status(200).entity(output).build();
+	public Dog getDogDesc(@PathParam("dogname") String dogName) {
+		// String output = dogDesc + "<br>sent Data:" + dogName;
+		// return Response.status(200).entity(output).build();
+		return null;
 
 	}
 
 	@GET
 	@Path("/{dogname}/{desc}")
-	public String getDogName(@PathParam("dogname") String dogN,
-			@PathParam("desc") String desc) {
+	public String getDogName(@PathParam("dogname") String dogN, @PathParam("desc") String desc) {
 		String output = dogName + "<br> sent Parameters:" + dogN + "," + desc;
 		// return Response.status(200).entity(output).build();
 		return output;

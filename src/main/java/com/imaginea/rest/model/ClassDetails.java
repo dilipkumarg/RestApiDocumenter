@@ -6,34 +6,17 @@ public class ClassDetails {
 	
 	String id;
 	Map<String,ModelPropertyDiscriptor> properties;
-	/**
-	 * @return the className
-	 */
-	public String getClassName() {
+	public String getId() {
 		return id;
 	}
-	/**
-	 * @param className the className to set
-	 */
-	public void setClassName(String className) {
-		this.id = className;
+	public void setId(String id) {
+		this.id = id;
 	}
-	/**
-	 * @return the propertiesList
-	 */
-	public Map<String, ModelPropertyDiscriptor> getPropertiesList() {
+	public Map<String, ModelPropertyDiscriptor> getProperties() {
 		return properties;
 	}
-	/**
-	 * @param propertiesList the propertiesList to set
-	 */
-	public void setPropertiesList(Map<String, ModelPropertyDiscriptor> propertiesList) {
-		this.properties = propertiesList;
+	public void setProperties(Map<String, ModelPropertyDiscriptor> properties) {
+		this.properties = properties;
 	}
 	
-	
-	
-	
-	
-
 }

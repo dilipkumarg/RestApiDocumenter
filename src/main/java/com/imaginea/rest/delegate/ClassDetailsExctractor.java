@@ -17,12 +17,12 @@ public class ClassDetailsExctractor {
 		Map<String, ClassDetails> map = new HashMap<String, ClassDetails>();
 
 		for (AbstractSubResourceMethod subResourceModel : absResource.getSubResourceMethods()) {
-			Field[] fieldsInReturnType = subResourceModel.getReturnType().getFields();
+			Field[] fieldsInReturnType = subResourceModel.getReturnType().getDeclaredFields();
 
 			if (isNotPrimitiveOrWrapper(fieldsInReturnType, subResourceModel)) {
 				ClassDetails detail = getClassDetails(subResourceModel.getReturnType().getSimpleName(),
 						fieldsInReturnType);
-				map.put(detail.getClassName(), detail);
+				map.put(detail.getId(), detail);
 			}
 		}
 
@@ -52,14 +52,14 @@ public class ClassDetailsExctractor {
 	 */
 	private ClassDetails getClassDetails(String className, Field[] fieldsInReturnType) {
 		ClassDetails classDetail = new ClassDetails();
-		classDetail.setClassName(className);
+		classDetail.setId(className);
 		Map<String, ModelPropertyDiscriptor> modelPropertyMap = new HashMap<String, ModelPropertyDiscriptor>();
 
 		for (int i = 0; i < fieldsInReturnType.length; i++) {
 			ModelPropertyDiscriptor desc = getFieldsDescription(fieldsInReturnType[i]);
 			modelPropertyMap.put(fieldsInReturnType[i].getName(), desc);
 		}
-		classDetail.setPropertiesList(modelPropertyMap);
+		classDetail.setProperties(modelPropertyMap);
 		return classDetail;
 
 	}
