@@ -47,7 +47,6 @@ public class ApiDocumenter {
 	@Path("/{class}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getClassInfo(@PathParam("class") String className) throws IOException, ClassNotFoundException {
-		// todo extract to class variable
 		return JsonUtil.toJson(apiDoc.extractClassInfo(className)).toString();
 	}
 }

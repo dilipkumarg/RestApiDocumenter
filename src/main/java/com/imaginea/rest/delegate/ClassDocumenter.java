@@ -26,7 +26,7 @@ public class ClassDocumenter {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public ClassResponseEntity extractClassInfo(Class className) {
+	public ClassResponseEntity extractClassInfo(Class className) throws ClassNotFoundException {
 
 		AbstractResource absResource = IntrospectionModeller.createResource(className);
 		ClassResponseEntity response = new ClassResponseEntity();
