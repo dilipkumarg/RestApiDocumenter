@@ -1,11 +1,13 @@
 package com.imaginea.rest.model;
 
+import java.util.List;
+
 
 
 public class MethodResponse {
 	
 	private String path;
-	private MethodOperations operations;
+	private List<MethodOperations> operations;
 	/**
 	 * @return the path
 	 */
@@ -21,13 +23,13 @@ public class MethodResponse {
 	/**
 	 * @return the operations
 	 */
-	public MethodOperations getOperations() {
+	public List<MethodOperations> getOperations() {
 		return operations;
 	}
 	/**
 	 * @param operations the operations to set
 	 */
-	public void setOperations(MethodOperations operations) {
+	public void setOperations(List<MethodOperations> operations) {
 		this.operations = operations;
 	}
 

@@ -1,35 +1,34 @@
 package com.imaginea.rest.model;
 
-import java.util.List;
 import java.util.Map;
 
 public class ClassDetails {
 	
-	String className;
-	Map<String,ModelPropertyDiscriptor> propertiesList;
+	String id;
+	Map<String,ModelPropertyDiscriptor> properties;
 	/**
 	 * @return the className
 	 */
 	public String getClassName() {
-		return className;
+		return id;
 	}
 	/**
 	 * @param className the className to set
 	 */
 	public void setClassName(String className) {
-		this.className = className;
+		this.id = className;
 	}
 	/**
 	 * @return the propertiesList
 	 */
 	public Map<String, ModelPropertyDiscriptor> getPropertiesList() {
-		return propertiesList;
+		return properties;
 	}
 	/**
 	 * @param propertiesList the propertiesList to set
 	 */
 	public void setPropertiesList(Map<String, ModelPropertyDiscriptor> propertiesList) {
-		this.propertiesList = propertiesList;
+		this.properties = propertiesList;
 	}
 	
 	

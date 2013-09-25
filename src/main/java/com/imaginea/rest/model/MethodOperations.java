@@ -6,11 +6,11 @@ public class MethodOperations {
 
 	private String method;
 	private String type;
-	private String nickName;
+	private String nickname;
 	private List<String> produces;
 	private List<String> consumes;
-	private List<MethodParameters> parameterList;
-	private String returnType;
+	private List<MethodParameters> parameters;
+	private String responseClass;
 
 	/**
 	 * @return the method
@@ -42,49 +42,28 @@ public class MethodOperations {
 		this.type = type;
 	}
 
-	/**
-	 * @return the nickName
-	 */
-	public String getNickName() {
-		return nickName;
+	public String getNickname() {
+		return nickname;
 	}
 
-	/**
-	 * @param nickName
-	 *            the nickName to set
-	 */
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
-	/**
-	 * @return the parameterList
-	 */
-	public List<MethodParameters> getParameterList() {
-		return parameterList;
+	public List<MethodParameters> getParameters() {
+		return parameters;
 	}
 
-	/**
-	 * @param parameterList
-	 *            the parameterList to set
-	 */
-	public void setParameterList(List<MethodParameters> parameterList) {
-		this.parameterList = parameterList;
+	public void setParameters(List<MethodParameters> parameters) {
+		this.parameters = parameters;
 	}
 
-	/**
-	 * @return the returnType
-	 */
-	public String getReturnType() {
-		return returnType;
+	public String getResponseClass() {
+		return responseClass;
 	}
 
-	/**
-	 * @param returnType
-	 *            the returnType to set
-	 */
-	public void setReturnType(String returnType) {
-		this.returnType = returnType;
+	public void setResponseClass(String responseClass) {
+		this.responseClass = responseClass;
 	}
 
 	public List<String> getProduces() {
@@ -103,7 +82,8 @@ public class MethodOperations {
 	}
 
 	/**
-	 * @param consumes the consumes to set
+	 * @param consumes
+	 *            the consumes to set
 	 */
 	public void setConsumes(List<String> consumes) {
 		this.consumes = consumes;

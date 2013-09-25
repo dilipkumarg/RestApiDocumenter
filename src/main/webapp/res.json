@@ -1,0 +1,73 @@
+{
+    "models": {
+        "Dog": {
+            "id": "Dog", 
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        }
+    }, 
+    "basePath": "rest/", 
+    "apiVersion": "1.0.0", 
+    "swaggerVersion": "1.2", 
+    "resourcePath": "/dog", 
+    "apis": [
+        {
+            "path": "/dog//{catname}", 
+            "operations": [{
+                "nickname": "getDogDesc", 
+                "produces": [
+                    "*/*"
+                ], 
+                "method": "GET", 
+                "parameters": [
+                    {
+                        "name": "catname", 
+                        "required": true, 
+                        "type": "String", 
+                        "paramType": "PATH"
+                    }
+                ], 
+                "type": "String", 
+                "consumes": [
+                    "*/*"
+                ], 
+                "returnType": "String"
+            }]
+        }, 
+        {
+            "path": "/dog//{catname}/{desc}", 
+            "operations": [{
+                "nickname": "getDogName", 
+                "produces": [
+                    "*/*"
+                ], 
+                "method": "GET", 
+                "parameters": [
+                    {
+                        "name": "catname", 
+                        "required": true, 
+                        "type": "String", 
+                        "paramType": "PATH"
+                    }, 
+                    {
+                        "name": "desc", 
+                        "required": true, 
+                        "type": "String", 
+                        "paramType": "PATH"
+                    }
+                ], 
+                "type": "String", 
+                "consumes": [
+                    "*/*"
+                ], 
+                "returnType": "String"
+            }]
+        }
+    ], 
+    "produces": [
+        "application/json"
+    ]
+}

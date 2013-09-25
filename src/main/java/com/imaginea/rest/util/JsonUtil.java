@@ -11,9 +11,11 @@ public class JsonUtil {
 	
 	 public static JSONObject toJsonString(ClassResponseEntity searchResult) throws JSONException {
 			JSONObject jsonObj = new JSONObject();
+			// TODO change base path from hard coded
+			jsonObj.put("basePath", "http://172.16.12.253:8080/RESTfulExample/rest");
 			jsonObj.put("resourcePath", searchResult.getResourcePath());
 			jsonObj.put("apis", searchResult.getResponseList());
-			jsonObj.put("Models", searchResult.getModelList());
+			jsonObj.put("models", searchResult.getModelList());
 		
 		 return jsonObj;
 	 }
