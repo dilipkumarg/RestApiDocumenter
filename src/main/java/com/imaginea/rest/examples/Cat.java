@@ -27,6 +27,7 @@ public class Cat {
 	@Path("/{catname}/{desc}")
 	public Response getCatName(@PathParam("catname") String catN,
 			@PathParam("desc") String desc) {
+		
 		String output = catName + "<br> sent Parameters:" + catN + "," + desc;
 		return Response.status(200).entity(output).build();
 	}
