@@ -47,7 +47,6 @@ public class ApiDocumenter {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMetaInfo() {
 		 List<ClassInfo> classInfoList=getListClassMetaData();
-		 System.out.println("List Size "+classInfoList.size());
 		 JSONObject jsonObj = new JSONObject();
 		 jsonObj.put("apis",classInfoList);
 		 return jsonObj.toString();
@@ -69,20 +68,11 @@ public class ApiDocumenter {
 		return getJsonStringForClass(className);
 	}
 
-	public static void main(String[] args) throws ClassNotFoundException, IOException {/*
-		
-		Set<Class<? extends Object>> allClasses = reflections.getTypesAnnotatedWith(Path.class);
-		for (Class className : allClasses) {
-			System.out.println("ClassName "+className.getSimpleName());
-			SwaggerFileUtil.writeClassJsonMaptoFile(className.getSimpleName(), doc.getClassInfo(className.getName()), true,
-							"ClassJsonMap.properties");
-		}
-		
-		
-	*/}
-
-	
-	
+	/**
+	 * This Method will return the list of Classes having @Path annotation. 
+	 * from the file already created and stored.
+	 * @return
+	 */
 	public List<ClassInfo> getListClassMetaData() {
 		List<ClassInfo> apis = new ArrayList<ClassInfo>();
 		Set<Object> pathKeySet=props.keySet();
@@ -94,6 +84,12 @@ public class ApiDocumenter {
 		return apis;
 	}
 	
+	/**
+	 * This method will return the JSON String corrosponding to the class passed to the method.
+	 * This will be read and retured from the config file already created and stored.
+	 * @param className
+	 * @return
+	 */
 	public String getJsonStringForClass(String className){
 		return (String) props.get(className);
 		

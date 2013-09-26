@@ -21,15 +21,12 @@ public class ClassDocumenter {
 
 	@SuppressWarnings("rawtypes")
 	public ClassResponseEntity extractClassInfo(String className) throws ClassNotFoundException {
-		// TODO change this hard coded path
 		Class givenClass = Class.forName(className);
 		return extractClassInfo(givenClass);
 	}
 
 	@SuppressWarnings("rawtypes")
 	public ClassResponseEntity extractClassInfo(Class className) throws ClassNotFoundException {
-
-		
 		AbstractResource absResource = IntrospectionModeller.createResource(className);
 		ClassResponseEntity response = new ClassResponseEntity();
 		response.setResourcePath(absResource.getPath().getValue());
