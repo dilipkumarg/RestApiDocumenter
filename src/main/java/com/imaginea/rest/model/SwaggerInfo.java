@@ -3,9 +3,6 @@ package com.imaginea.rest.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.jersey.api.model.AbstractResource;
-import com.sun.jersey.server.impl.modelapi.annotation.IntrospectionModeller;
-
 public class SwaggerInfo {
 	/*private final String apiVersion = "1.0.0";
 	private final String swaggerVersion = "1.2";*/

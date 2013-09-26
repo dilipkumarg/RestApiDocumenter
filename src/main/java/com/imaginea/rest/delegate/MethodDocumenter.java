@@ -17,22 +17,17 @@ public class MethodDocumenter {
 	public List<MethodResponse> extractMethodsInfo(AbstractResource absResource) {
 		List<MethodResponse> methodResponseList = new ArrayList<MethodResponse>();
 
-		for (AbstractSubResourceMethod subResourceModel : absResource
-				.getSubResourceMethods()) {
+		for (AbstractSubResourceMethod subResourceModel : absResource.getSubResourceMethods()) {
 			MethodResponse mResponse = new MethodResponse();
 			// adding resource path to the method path
-			mResponse.setPath(absResource.getPath().getValue()
-					+ subResourceModel.getPath().getValue());
-
-			mResponse
-					.setOperations(extractMethodOperationDetails(subResourceModel));
+			mResponse.setPath(absResource.getPath().getValue() + subResourceModel.getPath().getValue());
+			mResponse.setOperations(extractMethodOperationDetails(subResourceModel));
 			methodResponseList.add(mResponse);
 		}
 		return methodResponseList;
 	}
 
-	private List<MethodOperations> extractMethodOperationDetails(
-			AbstractSubResourceMethod subResMethod) {
+	private List<MethodOperations> extractMethodOperationDetails(AbstractSubResourceMethod subResMethod) {
 		// swagger-ui expecting operations as array format so we are sending as
 		// list, even though it not necessary
 		List<MethodOperations> mOpList = new ArrayList<MethodOperations>();
@@ -45,10 +40,9 @@ public class MethodDocumenter {
 	 * @param mOperations
 	 * @param paramsList
 	 */
-	private MethodOperations getMethodOperationDetails(
-			AbstractSubResourceMethod subResourceModel) {
+	private MethodOperations getMethodOperationDetails(AbstractSubResourceMethod subResourceModel) {
 		MethodOperations mOperations = new MethodOperations();
-		// extracting produces 
+		// extracting produces
 		if (!subResourceModel.getSupportedOutputTypes().isEmpty()) {
 			mOperations.setProduces(extractProduces(subResourceModel));
 		}// extracting consumes
@@ -60,13 +54,13 @@ public class MethodDocumenter {
 		mOperations.setNickname(subResourceModel.getMethod().getName());
 		mOperations.setType(subResourceModel.getReturnType().getSimpleName());
 		mOperations.setParameters(extractMethodParameters(subResourceModel));
-		mOperations.setResponseClass(subResourceModel.getReturnType()
-				.getSimpleName());
+		mOperations.setResponseClass(subResourceModel.getReturnType().getSimpleName());
 		return mOperations;
 	}
 
 	/**
 	 * returns the produce types for method
+	 * 
 	 * @param subResMethod
 	 * @return
 	 */
@@ -80,6 +74,7 @@ public class MethodDocumenter {
 
 	/**
 	 * returns consumes part for method
+	 * 
 	 * @param subResMethod
 	 * @return
 	 */
@@ -90,14 +85,14 @@ public class MethodDocumenter {
 		}
 		return inTypes;
 	}
-	
+
 	/**
 	 * it will returns list of methods and their properties
+	 * 
 	 * @param subResMethod
 	 * @return
 	 */
-	private List<MethodParameters> extractMethodParameters(
-			AbstractSubResourceMethod subResMethod) {
+	private List<MethodParameters> extractMethodParameters(AbstractSubResourceMethod subResMethod) {
 
 		List<MethodParameters> paramsList = new ArrayList<MethodParameters>();
 		for (Parameter param : subResMethod.getParameters()) {
@@ -121,8 +116,7 @@ public class MethodDocumenter {
 		// if annotation is not present means it is a body param
 		if (param.getAnnotation() != null) {
 			// we can decide required if it is a annonation
-			mParameters.setRequired(param.getAnnotation().annotationType()
-					.isAnnotation());
+			mParameters.setRequired(param.getAnnotation().annotationType().isAnnotation());
 			mParameters.setName(param.getSourceName());
 		}
 		return mParameters;

@@ -12,9 +12,6 @@ import java.util.Set;
 import javax.ws.rs.Path;
 
 import org.reflections.Reflections;
-import org.reflections.util.ClasspathHelper;
-
-import com.sun.jersey.spi.resource.Singleton;
 
 /**
  * @author sandeep-t
@@ -22,7 +19,7 @@ import com.sun.jersey.spi.resource.Singleton;
  */
 
 
-public class SwaggerFileUtil {
+public final class SwaggerFileUtil {
 
 	public static void writeClassJsonMaptoFile(String key, String Value, boolean writeToexistingFile, String fileName)
 					throws IOException {
@@ -39,9 +36,9 @@ public class SwaggerFileUtil {
 	}
 	
 	
-	public static Set<Class<? extends Object>> getallClasses(String basePackage){
+	public static Set<Class<?>> getallClasses(String basePackage){
 		Reflections reflections = new Reflections(basePackage);
-		Set<Class<? extends Object>> allClasses = reflections.getTypesAnnotatedWith(Path.class);
+		Set<Class<?>> allClasses = reflections.getTypesAnnotatedWith(Path.class);
 		return allClasses;
 	}
 	
@@ -50,6 +47,5 @@ public class SwaggerFileUtil {
 		Set<Class<? extends Object>> allClasses = reflections.getTypesAnnotatedWith(Path.class);
 		System.out.println("ALL "+allClasses);
 	}*/
-	
 	
 }

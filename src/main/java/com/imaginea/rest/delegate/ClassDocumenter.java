@@ -5,7 +5,6 @@ package com.imaginea.rest.delegate;
 
 import com.imaginea.rest.model.ClassResponseEntity;
 import com.sun.jersey.api.model.AbstractResource;
-import com.sun.jersey.server.impl.container.servlet.JerseyServletContainerInitializer;
 import com.sun.jersey.server.impl.modelapi.annotation.IntrospectionModeller;
 
 public class ClassDocumenter {
