@@ -16,23 +16,25 @@ import javax.ws.rs.core.MediaType;
 
 import net.sf.json.JSONObject;
 
-import org.reflections.Reflections;
-
-import com.google.gson.Gson;
 import com.imaginea.rest.delegate.ClassDocumenter;
 import com.imaginea.rest.model.ClassInfo;
-import com.imaginea.rest.model.SwaggerInfo;
+import com.imaginea.rest.model.ClassResponseEntity;
 import com.imaginea.rest.util.JsonUtil;
+import com.imaginea.rest.util.SwaggerFileUtil;
+import com.sun.jersey.spi.resource.Singleton;
 
+@Singleton
 @Path("/apidocs")
 public class ApiDocumenter {
 	
 	private ClassDocumenter apiDoc;
-	private Properties props =null;
-	public ApiDocumenter() throws FileNotFoundException, IOException {
-		props= new Properties();
-		props.load(new FileInputStream(this.getClass().getResource("/ClassJsonMap.properties").getPath()));
+	private static Properties props =null;
+	
+	public ApiDocumenter() throws FileNotFoundException, IOException, ClassNotFoundException {
 		apiDoc = new ClassDocumenter();
+		init();
+		//load(new FileInputStream(this.getClass().getResource("/ClassJsonMap.properties").getPath()));
+		
 	}
 
 
@@ -65,7 +67,8 @@ public class ApiDocumenter {
 	@Path("/{class}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getClassInfo(@PathParam("class") String className) throws IOException, ClassNotFoundException {
-		return getJsonStringForClass(className);
+		//return JsonUtil.toJson(apiDoc.extractClassInfo(className)).toString();
+		return props.getProperty("/"+className);
 	}
 
 	/**
@@ -78,7 +81,7 @@ public class ApiDocumenter {
 		Set<Object> pathKeySet=props.keySet();
 		for(Object path: pathKeySet){
 			ClassInfo classDesc = new ClassInfo();
-			classDesc.setPath("/"+path);
+			classDesc.setPath(path.toString());
 			apis.add(classDesc);	
 		}
 		return apis;
@@ -94,6 +97,18 @@ public class ApiDocumenter {
 		return (String) props.get(className);
 		
 	}
+	
+	private void init() throws ClassNotFoundException, IOException{
+		props=new Properties();
+		props.load(new FileInputStream(this.getClass().getResource("/SwaggerConfig.properties").getPath()));
+		Set<Class<? extends Object>> allClasses=SwaggerFileUtil.getallClasses(props.getProperty("base.package.name"));
+		props= new Properties();
+		for (Class className : allClasses) {
+		ClassResponseEntity extractClassInfo = apiDoc.extractClassInfo(className);
+		props.put(extractClassInfo.getResourcePath(),JsonUtil.toJson(extractClassInfo).toString());
+		}
+	}
+	
 	
 	
 	
