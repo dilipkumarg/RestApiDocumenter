@@ -1,73 +1,40 @@
 {
-    "models": {
-        "Dog": {
-            "id": "Dog", 
-            "properties": {
-                "id": {
-                    "type": "string"
-                }
+
+  "basePath":"http://petstore.swagger.wordnik.com/api",
+  "resourcePath":"/store",
+  "apis":[
+    {
+      "path":"/store.{format}/order/{orderId}",
+      "operations":[
+        {
+          "method":"GET",
+          "responseClass":"Order",
+          "nickname":"getOrderById",
+          "parameters":[
+            {
+              "name":"orderId",
+              "paramType":"path",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
             }
-        }
-    }, 
-    "basePath": "rest/", 
-    "apiVersion": "1.0.0", 
-    "swaggerVersion": "1.2", 
-    "resourcePath": "/dog", 
-    "apis": [
+          ]
+        },
         {
-            "path": "/dog//{catname}", 
-            "operations": [{
-                "nickname": "getDogDesc", 
-                "produces": [
-                    "*/*"
-                ], 
-                "method": "GET", 
-                "parameters": [
-                    {
-                        "name": "catname", 
-                        "required": true, 
-                        "type": "String", 
-                        "paramType": "PATH"
-                    }
-                ], 
-                "type": "String", 
-                "consumes": [
-                    "*/*"
-                ], 
-                "returnType": "String"
-            }]
-        }, 
-        {
-            "path": "/dog//{catname}/{desc}", 
-            "operations": [{
-                "nickname": "getDogName", 
-                "produces": [
-                    "*/*"
-                ], 
-                "method": "GET", 
-                "parameters": [
-                    {
-                        "name": "catname", 
-                        "required": true, 
-                        "type": "String", 
-                        "paramType": "PATH"
-                    }, 
-                    {
-                        "name": "desc", 
-                        "required": true, 
-                        "type": "String", 
-                        "paramType": "PATH"
-                    }
-                ], 
-                "type": "String", 
-                "consumes": [
-                    "*/*"
-                ], 
-                "returnType": "String"
-            }]
+          "method":"DELETE",
+          "responseClass":"void",
+          "nickname":"deleteOrder",
+          "parameters":[
+            {
+              "name":"orderId",
+              "paramType":"path",
+              "required":true,
+              "allowMultiple":false,
+              "dataType":"string"
+            }
+          ]
         }
-    ], 
-    "produces": [
-        "application/json"
-    ]
+      ]
+    }
+  ]
 }

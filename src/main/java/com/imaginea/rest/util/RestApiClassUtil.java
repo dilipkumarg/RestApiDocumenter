@@ -99,7 +99,7 @@ public final class RestApiClassUtil {
 	 * allClasses; }
 	 */
 
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Set<Class> getannotatedClasses(Class<? extends Annotation> ac, Set<Class<?>> allAnnotatedClasses) {
 		LOGGER.debug("Searching for "+ac+" annotated classes");
 		Set<Class> s = new HashSet<Class>();
@@ -110,6 +110,7 @@ public final class RestApiClassUtil {
 		return s;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public static Set<Class> getPathAnnotatedClasses(String[] args, ServletContext servletContext) {
 		LOGGER.debug("Searching got annotated classes in the locations "+args);
 		ScanningResourceConfig config = new ScanningResourceConfig();

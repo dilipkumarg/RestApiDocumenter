@@ -20,11 +20,25 @@ public class MethodDocumenter {
 		for (AbstractSubResourceMethod subResourceModel : absResource.getSubResourceMethods()) {
 			MethodResponse mResponse = new MethodResponse();
 			// adding resource path to the method path
-			mResponse.setPath(absResource.getPath().getValue() + subResourceModel.getPath().getValue());
+			mResponse.setPath(getMethodPath(absResource.getPath().getValue(), subResourceModel.getPath().getValue()));
 			mResponse.setOperations(extractMethodOperationDetails(subResourceModel));
 			methodResponseList.add(mResponse);
 		}
 		return methodResponseList;
+	}
+
+	/**
+	 * Returns the uri path for method. output will be {resPath}/{methPath}
+	 * 
+	 * @param resPath
+	 * @param methPath
+	 * @return
+	 */
+	private String getMethodPath(String resPath, String methPath) {
+		resPath = (resPath.endsWith("/")) ? resPath.substring(0, resPath.length() - 1) : resPath;
+		methPath = (methPath.startsWith("/")) ? methPath : "/" + methPath;
+
+		return resPath + methPath;
 	}
 
 	private List<MethodOperations> extractMethodOperationDetails(AbstractSubResourceMethod subResMethod) {

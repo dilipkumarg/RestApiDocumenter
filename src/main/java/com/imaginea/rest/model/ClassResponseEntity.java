@@ -5,18 +5,12 @@ import java.util.Map;
 
 public class ClassResponseEntity {
 
-	
+	private String basePath;
 	private String resourcePath;
-	
 	private String produces;
-	
 	private String consumes;
-	
-	private List<MethodResponse> responseList;
-	
-//private Models modelList;
-	
-	Map<String,ClassDetails> modelList;
+	private List<MethodResponse> apis;
+	private Map<String,ClassDetails> models;
 
 	/**
 	 * @return the resourcePath
@@ -46,20 +40,7 @@ public class ClassResponseEntity {
 		this.produces = produces;
 	}
 
-	/**
-	 * @return the responseList
-	 */
-	public List<MethodResponse> getResponseList() {
-		return responseList;
-	}
-
-	/**
-	 * @param responseList the responseList to set
-	 */
-	public void setResponseList(List<MethodResponse> responseList) {
-		this.responseList = responseList;
-	}
-
+	
 	
 	/**
 	 * @return the consumes
@@ -75,18 +56,47 @@ public class ClassResponseEntity {
 		this.consumes = consumes;
 	}
 
+	
 	/**
-	 * @return the modelList
+	 * @return the basePath
 	 */
-	public Map<String, ClassDetails> getModelList() {
-		return modelList;
+	public String getBasePath() {
+		return basePath;
 	}
 
 	/**
-	 * @param modelList the modelList to set
+	 * @param basePath the basePath to set
 	 */
-	public void setModelList(Map<String, ClassDetails> modelList) {
-		this.modelList = modelList;
+	public void setBasePath(String basePath) {
+		this.basePath = basePath;
+	}
+
+	/**
+	 * @return the apis
+	 */
+	public List<MethodResponse> getApis() {
+		return apis;
+	}
+
+	/**
+	 * @param apis the apis to set
+	 */
+	public void setApis(List<MethodResponse> apis) {
+		this.apis = apis;
+	}
+
+	/**
+	 * @return the models
+	 */
+	public Map<String,ClassDetails> getModels() {
+		return models;
+	}
+
+	/**
+	 * @param models the models to set
+	 */
+	public void setModels(Map<String,ClassDetails> models) {
+		this.models = models;
 	}
 
 	
