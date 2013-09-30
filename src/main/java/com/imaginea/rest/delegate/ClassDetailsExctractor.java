@@ -20,9 +20,8 @@ public class ClassDetailsExctractor {
 		
 		Map<String, ClassDetails> map = new HashMap<String, ClassDetails>();
 		for (AbstractSubResourceMethod subResourceModel : absResource.getSubResourceMethods()) {
-			LOGGER.debug("Extracting class details for ");
+			LOGGER.debug("Extracting Method details for "+subResourceModel.getMethod().getName());
 			Field[] fieldsInReturnType = subResourceModel.getReturnType().getDeclaredFields();
-
 			if (isNotPrimitiveOrWrapper(fieldsInReturnType, subResourceModel)) {
 				ClassDetails detail = getClassDetails(subResourceModel.getReturnType().getSimpleName(),
 						fieldsInReturnType);
@@ -35,12 +34,14 @@ public class ClassDetailsExctractor {
 
 	private boolean isNotPrimitiveOrWrapper(Field[] fieldsInReturnType, AbstractSubResourceMethod subResourceModel)
 			throws ClassNotFoundException {
+		LOGGER.debug("Checking for the return types in the method "+subResourceModel.getMethod().getName());
 		boolean isNotPrimitive = false;
 		if (fieldsInReturnType.length > 0) {
 			if (!RestApiClassUtil.isPrimitiveOrWrapper(Class.forName(subResourceModel.getReturnType()
 					.getCanonicalName()))
 					&& !(Class.forName(subResourceModel.getReturnType().getCanonicalName()).equals(String.class))) {
 				isNotPrimitive = true;
+				LOGGER.debug("Return type for the method "+subResourceModel.getMethod().getName()+" isNotPrimitive ");
 			}
 		}
 		return isNotPrimitive;
@@ -55,13 +56,15 @@ public class ClassDetailsExctractor {
 	 * @param fieldsInReturnType
 	 */
 	private ClassDetails getClassDetails(String className, Field[] fieldsInReturnType) {
+		LOGGER.debug("Going to get Details for the class "+ className+" as its a return type used in JSON ");
 		ClassDetails classDetail = new ClassDetails();
 		classDetail.setId(className);
 		Map<String, ModelPropertyDiscriptor> modelPropertyMap = new HashMap<String, ModelPropertyDiscriptor>();
-
+		LOGGER.debug("Preparing model details for the class "+className);
 		for (int i = 0; i < fieldsInReturnType.length; i++) {
 			ModelPropertyDiscriptor desc = getFieldsDescription(fieldsInReturnType[i]);
 			modelPropertyMap.put(fieldsInReturnType[i].getName(), desc);
+			
 		}
 		classDetail.setProperties(modelPropertyMap);
 		return classDetail;
@@ -77,10 +80,12 @@ public class ClassDetailsExctractor {
 	 * @return
 	 */
 	private ModelPropertyDiscriptor getFieldsDescription(Field field) {
+		LOGGER.debug("Adding Filed Discription for the field "+field.getName());
 		ModelPropertyDiscriptor desc = new ModelPropertyDiscriptor();
 		desc.setPropertyName(field.getName());
 		desc.setType(field.getType().getSimpleName());
 		desc.setDescription(field.getName() + " should be of  " + field.getType().getSimpleName() + " type ");
+		LOGGER.debug("Discriptions for the field "+field.getName()+" sucessfully added");
 		return desc;
 	}
 }
