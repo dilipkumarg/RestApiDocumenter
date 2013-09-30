@@ -33,8 +33,6 @@ import com.sun.jersey.spi.resource.Singleton;
 public class ApiDocumenter {
 
 	private ClassDocumenter apiDoc;
-
-
 	private final Logger logger = Logger.getLogger(ApiDocumenter.class);
 	private Gson gson;
 	private Map<String, String> pathJsonMap = null;
@@ -63,7 +61,7 @@ public class ApiDocumenter {
 	public String getMetaInfo() throws ClassNotFoundException {
 
 		String[] classPaths = new String[] { "/WEB-INF/lib", "/WEB-INF/classes" };
-		logger.debug("Class Paths going to be scanned for ApiDocumenter " + classPaths);
+		logger.info("Class Paths going to be scanned for ApiDocumenter " + classPaths);
 		Set<Class> allClasses = RestApiClassUtil.getPathAnnotatedClasses(classPaths, servletContext);
 		preparePathJsonMap(allClasses);
 		return gson.toJson(getListClassMetaData());
@@ -78,10 +76,8 @@ public class ApiDocumenter {
 		logger.debug("Preparing Map of path and respective JSON, Keyset Size  " + allClasses.size());
 		pathJsonMap = new HashMap<String, String>();
 		for (Class className : allClasses) {
-
 			ClassResponseEntity classInfo = apiDoc.extractClassInfo(className);
 			pathJsonMap.put(classInfo.getResourcePath(), gson.toJson(classInfo));
-
 		}
 		logger.debug("Path Json Map Prepared Sucessfully, Total elements " + pathJsonMap.size());
 	}
