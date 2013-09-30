@@ -11,10 +11,12 @@ public class ClassDocumenter {
 
 	private MethodDocumenter methodDocumenter;
 	private ClassDetailsExctractor classDetailsExtractor;
+	private String basePath;
 
-	public ClassDocumenter() {
+	public ClassDocumenter(String basePath) {
 		methodDocumenter = new MethodDocumenter();
 		classDetailsExtractor = new ClassDetailsExctractor();
+		this.basePath = basePath;
 
 	}
 
@@ -28,9 +30,10 @@ public class ClassDocumenter {
 	public ClassResponseEntity extractClassInfo(Class className) throws ClassNotFoundException {
 		AbstractResource absResource = IntrospectionModeller.createResource(className);
 		ClassResponseEntity response = new ClassResponseEntity();
+		response.setBasePath(basePath);
 		response.setResourcePath(absResource.getPath().getValue());
-		response.setResponseList(methodDocumenter.extractMethodsInfo(absResource));
-		response.setModelList(classDetailsExtractor.extractClassDetails(absResource));
+		response.setApis(methodDocumenter.extractMethodsInfo(absResource));
+		response.setModels(classDetailsExtractor.extractClassDetails(absResource));
 
 		return response;
 	}

@@ -1,7 +1,6 @@
 package com.imaginea.rest.documenter;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -19,12 +18,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import net.sf.json.JSONObject;
-
+import com.google.gson.Gson;
 import com.imaginea.rest.delegate.ClassDocumenter;
+import com.imaginea.rest.model.ApiInfo;
 import com.imaginea.rest.model.ClassInfo;
 import com.imaginea.rest.model.ClassResponseEntity;
-import com.imaginea.rest.util.JsonUtil;
 import com.imaginea.rest.util.RestApiClassUtil;
 import com.sun.jersey.spi.resource.Singleton;
 
@@ -33,18 +31,18 @@ import com.sun.jersey.spi.resource.Singleton;
 public class ApiDocumenter {
 
 	private ClassDocumenter apiDoc;
+	private Gson gson;
+	private Map<String, String> pathJsonMap = null;
 
-	private Map<String,String> pathJsonMap = null;
-	
 	@Context
 	ServletContext servletContext;
-	
+
 	String basePath;
-	public ApiDocumenter() throws FileNotFoundException, IOException, ClassNotFoundException {
-		
-		apiDoc = new ClassDocumenter();
-	//	ApiDocumenResourceConfig cong= new ApiDocumenResourceConfig();
+
+	public ApiDocumenter() throws IOException {
 		init();
+		apiDoc = new ClassDocumenter(basePath);
+		gson = new Gson();
 	}
 
 	/**
@@ -52,30 +50,28 @@ public class ApiDocumenter {
 	 * resources
 	 * 
 	 * @return
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
 	 */
+	@SuppressWarnings("rawtypes")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMetaInfo() throws ClassNotFoundException {
 		String[] classPaths = new String[] { "/WEB-INF/lib", "/WEB-INF/classes" };
 		Set<Class> allClasses = RestApiClassUtil.getPathAnnotatedClasses(classPaths, servletContext);
 		preparePathJsonMap(allClasses);
-		List<ClassInfo> classInfoList = getListClassMetaData();
-		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("apis", classInfoList);
-		return jsonObj.toString();
-
+		return gson.toJson(getListClassMetaData());
 	}
 
 	/**
 	 * @param allClasses
 	 * @throws ClassNotFoundException
 	 */
+	@SuppressWarnings("rawtypes")
 	private void preparePathJsonMap(Set<Class> allClasses) throws ClassNotFoundException {
 		pathJsonMap = new HashMap<String, String>();
 		for (Class className : allClasses) {
-			ClassResponseEntity extractClassInfo = apiDoc.extractClassInfo(className);
-			pathJsonMap.put(extractClassInfo.getResourcePath(), JsonUtil.toJson(extractClassInfo,basePath).toString());
+			ClassResponseEntity classInfo = apiDoc.extractClassInfo(className);
+			pathJsonMap.put(classInfo.getResourcePath(), gson.toJson(classInfo));
 		}
 	}
 
@@ -90,10 +86,7 @@ public class ApiDocumenter {
 	@GET
 	@Path("/{class: .*}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getClassInfo(@PathParam("class") String className) throws IOException, ClassNotFoundException {
-		// return
-		// JsonUtil.toJson(apiDoc.extractClassInfo(className)).toString();
-		
+	public String getClassInfo(@PathParam("class") String className) {
 		return pathJsonMap.get("/" + className);
 	}
 
@@ -104,7 +97,8 @@ public class ApiDocumenter {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	public List<ClassInfo> getListClassMetaData() {
+	public ApiInfo getListClassMetaData() {
+		ApiInfo apisInfo = new ApiInfo();
 		List<ClassInfo> apis = new ArrayList<ClassInfo>();
 		Set<String> pathKeySet = pathJsonMap.keySet();
 		for (String path : pathKeySet) {
@@ -112,15 +106,14 @@ public class ApiDocumenter {
 			classDesc.setPath(path);
 			apis.add(classDesc);
 		}
-		return apis;
+		apisInfo.setApis(apis);
+		return apisInfo;
 	}
-	
-	
-	private void init() throws ClassNotFoundException, IOException {
+
+	private void init() throws IOException {
 		Properties appProps = new Properties();
 		appProps.load(new FileInputStream(this.getClass().getResource("/SwaggerConfig.properties").getPath()));
-
-		basePath=appProps.getProperty("base.path.url");
+		basePath = appProps.getProperty("base.path.url");
 	}
 
 }

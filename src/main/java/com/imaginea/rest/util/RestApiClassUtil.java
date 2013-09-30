@@ -95,7 +95,7 @@ public final class RestApiClassUtil {
 	 * allClasses; }
 	 */
 
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Set<Class> getannotatedClasses(Class<? extends Annotation> ac, Set<Class<?>> allAnnotatedClasses) {
 		Set<Class> s = new HashSet<Class>();
 		for (Class c : allAnnotatedClasses)
@@ -104,6 +104,7 @@ public final class RestApiClassUtil {
 		return s;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public static Set<Class> getPathAnnotatedClasses(String[] args, ServletContext servletContext) {
 		ScanningResourceConfig config = new ScanningResourceConfig();
 		config.init(new WebAppResourcesScanner(args, servletContext));
