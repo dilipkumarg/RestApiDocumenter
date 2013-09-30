@@ -3,6 +3,7 @@ package com.imaginea.rest.documenter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +31,7 @@ import com.sun.jersey.spi.resource.Singleton;
 public class ApiDocumenter {
 
 	private ClassDocumenter apiDoc;
-	private static Map<String,String> pathJsonMap = null;
+	private static Map<String, String> pathJsonMap = null;
 
 	public ApiDocumenter() throws FileNotFoundException, IOException, ClassNotFoundException {
 		apiDoc = new ClassDocumenter();
@@ -44,10 +45,11 @@ public class ApiDocumenter {
 	 * resources
 	 * 
 	 * @return
+	 * @throws UnsupportedEncodingException
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getMetaInfo() {
+	public String getMetaInfo() throws UnsupportedEncodingException {
 		List<ClassInfo> classInfoList = getListClassMetaData();
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("apis", classInfoList);
@@ -64,7 +66,7 @@ public class ApiDocumenter {
 	 * @throws ClassNotFoundException
 	 */
 	@GET
-	@Path("/{class}")
+	@Path("/{class: .*}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getClassInfo(@PathParam("class") String className) throws IOException, ClassNotFoundException {
 		// return
@@ -77,8 +79,9 @@ public class ApiDocumenter {
 	 * the file already created and stored.
 	 * 
 	 * @return
+	 * @throws UnsupportedEncodingException
 	 */
-	public List<ClassInfo> getListClassMetaData() {
+	public List<ClassInfo> getListClassMetaData() throws UnsupportedEncodingException {
 		List<ClassInfo> apis = new ArrayList<ClassInfo>();
 		Set<String> pathKeySet = pathJsonMap.keySet();
 		for (String path : pathKeySet) {
@@ -93,11 +96,11 @@ public class ApiDocumenter {
 		Properties appProps = new Properties();
 		appProps.load(new FileInputStream(this.getClass().getResource("/SwaggerConfig.properties").getPath()));
 		Set<Class<?>> allClasses = SwaggerFileUtil.getallClasses(appProps.getProperty("base.package.name"));
-		String basePath=appProps.getProperty("base.path.url");
+		String basePath = appProps.getProperty("base.path.url");
 		pathJsonMap = new HashMap<String, String>();
 		for (Class className : allClasses) {
 			ClassResponseEntity extractClassInfo = apiDoc.extractClassInfo(className);
-			pathJsonMap.put(extractClassInfo.getResourcePath(), JsonUtil.toJson(extractClassInfo,basePath).toString());
+			pathJsonMap.put(extractClassInfo.getResourcePath(), JsonUtil.toJson(extractClassInfo, basePath).toString());
 		}
 	}
 

@@ -5,7 +5,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-@Path("/Testcat")
+@Path("/Test/Cat")
 public class Cat {
 
 	private String catName;
@@ -17,7 +17,7 @@ public class Cat {
 	}
 
 	@GET
-	@Path("/{catname}")
+	@Path("dilip/{catname}")
 	public Response getCaDesc(@PathParam("catname") String catName) {
 		String output = catDesc + "<br>sent Data:" + catName;
 		return Response.status(200).entity(output).build();
