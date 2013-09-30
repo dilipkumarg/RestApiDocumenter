@@ -12,6 +12,8 @@ import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Path;
 
+import org.apache.log4j.Logger;
+
 import com.sun.jersey.api.core.ScanningResourceConfig;
 import com.sun.jersey.spi.scanning.servlet.WebAppResourcesScanner;
 
@@ -22,6 +24,8 @@ import com.sun.jersey.spi.scanning.servlet.WebAppResourcesScanner;
 
 public final class RestApiClassUtil {
 
+	private static final Logger LOGGER= Logger.getLogger(RestApiClassUtil.class);
+	
 	/**
 	 * Maps primitive {@code Class}es to their corresponding wrapper
 	 * {@code Class}.
@@ -97,17 +101,21 @@ public final class RestApiClassUtil {
 
 	@SuppressWarnings({ "rawtypes" })
 	public static Set<Class> getannotatedClasses(Class<? extends Annotation> ac, Set<Class<?>> allAnnotatedClasses) {
+		LOGGER.debug("Searching for "+ac+" annotated classes");
 		Set<Class> s = new HashSet<Class>();
 		for (Class c : allAnnotatedClasses)
 			if (c.isAnnotationPresent(ac))
 				s.add(c);
+		LOGGER.debug("Found "+s.size()+" classes annotated with "+ac);
 		return s;
 	}
 	
 	public static Set<Class> getPathAnnotatedClasses(String[] args, ServletContext servletContext) {
+		LOGGER.debug("Searching got annotated classes in the locations "+args);
 		ScanningResourceConfig config = new ScanningResourceConfig();
 		config.init(new WebAppResourcesScanner(args, servletContext));
 		Set<Class<?>> annotatedclasses = config.getClasses();
+		LOGGER.debug("Total annotated classes found "+ annotatedclasses.size());
 		return getannotatedClasses(Path.class, annotatedclasses);
 	}
 

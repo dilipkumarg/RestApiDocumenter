@@ -18,6 +18,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Logger;
+
 import net.sf.json.JSONObject;
 
 import com.imaginea.rest.delegate.ClassDocumenter;
@@ -32,16 +34,18 @@ import com.sun.jersey.spi.resource.Singleton;
 public class ApiDocumenter {
 
 	private ClassDocumenter apiDoc;
-	private Map<String,String> pathJsonMap = null;
-	
+	private Map<String, String> pathJsonMap = null;
+
+	private final Logger logger = Logger.getLogger(ApiDocumenter.class);
+
 	@Context
 	ServletContext servletContext;
-	
+
 	String basePath;
+
 	public ApiDocumenter() throws FileNotFoundException, IOException, ClassNotFoundException {
-		
 		apiDoc = new ClassDocumenter();
-	//	ApiDocumenResourceConfig cong= new ApiDocumenResourceConfig();
+		// ApiDocumenResourceConfig cong= new ApiDocumenResourceConfig();
 		init();
 	}
 
@@ -50,12 +54,14 @@ public class ApiDocumenter {
 	 * resources
 	 * 
 	 * @return
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMetaInfo() throws ClassNotFoundException {
+
 		String[] classPaths = new String[] { "/WEB-INF/lib", "/WEB-INF/classes" };
+		logger.debug("Class Paths going to be scanned for ApiDocumenter " + classPaths);
 		Set<Class> allClasses = RestApiClassUtil.getPathAnnotatedClasses(classPaths, servletContext);
 		preparePathJsonMap(allClasses);
 		List<ClassInfo> classInfoList = getListClassMetaData();
@@ -70,11 +76,13 @@ public class ApiDocumenter {
 	 * @throws ClassNotFoundException
 	 */
 	private void preparePathJsonMap(Set<Class> allClasses) throws ClassNotFoundException {
+		logger.debug("Preparing Map of path and respective JSON, Keyset Size  " + allClasses.size());
 		pathJsonMap = new HashMap<String, String>();
 		for (Class className : allClasses) {
 			ClassResponseEntity extractClassInfo = apiDoc.extractClassInfo(className);
-			pathJsonMap.put(extractClassInfo.getResourcePath(), JsonUtil.toJson(extractClassInfo,basePath).toString());
+			pathJsonMap.put(extractClassInfo.getResourcePath(), JsonUtil.toJson(extractClassInfo, basePath).toString());
 		}
+		logger.debug("Path Json Map Prepared Sucessfully, Total elements " + pathJsonMap.size());
 	}
 
 	/**
@@ -89,9 +97,7 @@ public class ApiDocumenter {
 	@Path("/{class}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getClassInfo(@PathParam("class") String className) throws IOException, ClassNotFoundException {
-		// return
-		// JsonUtil.toJson(apiDoc.extractClassInfo(className)).toString();
-		
+		logger.debug("Going to get JSON info for the ClassName  " + className);
 		return pathJsonMap.get("/" + className);
 	}
 
@@ -105,18 +111,21 @@ public class ApiDocumenter {
 		List<ClassInfo> apis = new ArrayList<ClassInfo>();
 		Set<String> pathKeySet = pathJsonMap.keySet();
 		for (String path : pathKeySet) {
+			logger.debug("Inserting " + path + " for ClassInfo ");
 			ClassInfo classDesc = new ClassInfo();
 			classDesc.setPath(path);
 			apis.add(classDesc);
 		}
+		logger.debug("Total number of path list prepared " + apis.size());
 		return apis;
 	}
-	
-	
+
 	private void init() throws ClassNotFoundException, IOException {
 		Properties appProps = new Properties();
 		appProps.load(new FileInputStream(this.getClass().getResource("/SwaggerConfig.properties").getPath()));
-		basePath=appProps.getProperty("base.path.url");
+		logger.info("Property file SwaggerConfig.properties loaded sucessfully");
+		basePath = appProps.getProperty("base.path.url");
+		logger.debug("RestAPI base path url " + basePath);
 	}
 
 }

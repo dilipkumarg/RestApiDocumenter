@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.imaginea.rest.model.ClassDetails;
 import com.imaginea.rest.model.ModelPropertyDiscriptor;
 import com.imaginea.rest.util.RestApiClassUtil;
@@ -12,10 +14,13 @@ import com.sun.jersey.api.model.AbstractSubResourceMethod;
 
 public class ClassDetailsExctractor {
 
+	
+	private static final Logger LOGGER = Logger.getLogger(ClassDetailsExctractor.class);
 	public Map<String, ClassDetails> extractClassDetails(AbstractResource absResource) throws ClassNotFoundException {
+		
 		Map<String, ClassDetails> map = new HashMap<String, ClassDetails>();
-
 		for (AbstractSubResourceMethod subResourceModel : absResource.getSubResourceMethods()) {
+			LOGGER.debug("Extracting class details for ");
 			Field[] fieldsInReturnType = subResourceModel.getReturnType().getDeclaredFields();
 
 			if (isNotPrimitiveOrWrapper(fieldsInReturnType, subResourceModel)) {

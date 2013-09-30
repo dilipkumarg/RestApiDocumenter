@@ -6,7 +6,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/Testdog")
+//@Path("/Testdog")
 public class Dog {
 
 	private String dogName;
