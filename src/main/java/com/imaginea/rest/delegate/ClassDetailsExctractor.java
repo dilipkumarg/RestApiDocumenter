@@ -4,10 +4,9 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.ClassUtils;
-
 import com.imaginea.rest.model.ClassDetails;
 import com.imaginea.rest.model.ModelPropertyDiscriptor;
+import com.imaginea.rest.util.RestApiClassUtil;
 import com.sun.jersey.api.model.AbstractResource;
 import com.sun.jersey.api.model.AbstractSubResourceMethod;
 
@@ -33,9 +32,9 @@ public class ClassDetailsExctractor {
 			throws ClassNotFoundException {
 		boolean isNotPrimitive = false;
 		if (fieldsInReturnType.length > 0) {
-			if (!ClassUtils.isPrimitiveOrWrapper(ClassUtils.getClass(subResourceModel.getReturnType()
+			if (!RestApiClassUtil.isPrimitiveOrWrapper(Class.forName(subResourceModel.getReturnType()
 					.getCanonicalName()))
-					&& !(ClassUtils.getClass(subResourceModel.getReturnType().getCanonicalName()).equals(String.class))) {
+					&& !(Class.forName(subResourceModel.getReturnType().getCanonicalName()).equals(String.class))) {
 				isNotPrimitive = true;
 			}
 		}
