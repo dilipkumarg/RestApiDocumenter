@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Logger;
+
 import com.imaginea.rest.model.MethodOperations;
 import com.imaginea.rest.model.MethodParameters;
 import com.imaginea.rest.model.MethodResponse;
@@ -14,13 +16,16 @@ import com.sun.jersey.api.model.Parameter;
 
 public class MethodDocumenter {
 
-	public List<MethodResponse> extractMethodsInfo(AbstractResource absResource) {
-		List<MethodResponse> methodResponseList = new ArrayList<MethodResponse>();
+	private final Logger logger = Logger.getLogger(MethodDocumenter.class);
 
+	public List<MethodResponse> extractMethodsInfo(AbstractResource absResource) {
+		logger.debug("extracting methods information for: " + absResource.getPath());
+		List<MethodResponse> methodResponseList = new ArrayList<MethodResponse>();
 		for (AbstractSubResourceMethod subResourceModel : absResource.getSubResourceMethods()) {
 			MethodResponse mResponse = new MethodResponse();
 			// adding resource path to the method path
 			mResponse.setPath(getMethodPath(absResource.getPath().getValue(), subResourceModel.getPath().getValue()));
+			logger.debug("found path: " + mResponse.getPath());
 			mResponse.setOperations(extractMethodOperationDetails(subResourceModel));
 			methodResponseList.add(mResponse);
 		}
