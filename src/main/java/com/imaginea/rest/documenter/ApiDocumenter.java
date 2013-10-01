@@ -1,12 +1,7 @@
 package com.imaginea.rest.documenter;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.Set;
 
@@ -21,10 +16,8 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
-import com.imaginea.rest.delegate.ClassDocumenter;
-import com.imaginea.rest.model.ApiInfo;
-import com.imaginea.rest.model.ClassInfo;
-import com.imaginea.rest.model.ClassResponseEntity;
+import com.imaginea.rest.constants.RestApiConstants;
+import com.imaginea.rest.delegate.ApiDocumenterDelegate;
 import com.imaginea.rest.util.RestApiClassUtil;
 import com.sun.jersey.spi.resource.Singleton;
 
@@ -32,10 +25,9 @@ import com.sun.jersey.spi.resource.Singleton;
 @Path("/apidocs")
 public class ApiDocumenter {
 
-	private ClassDocumenter apiDoc;
 	private final Logger logger = Logger.getLogger(ApiDocumenter.class);
 	private Gson gson;
-	private Map<String, String> pathJsonMap = null;
+	private ApiDocumenterDelegate apiDelegate;
 
 	@Context
 	ServletContext servletContext;
@@ -44,8 +36,8 @@ public class ApiDocumenter {
 
 	public ApiDocumenter() throws IOException {
 		init();
-		apiDoc = new ClassDocumenter(basePath);
 		gson = new Gson();
+		apiDelegate = new ApiDocumenterDelegate(basePath);
 	}
 
 	/**
@@ -63,23 +55,8 @@ public class ApiDocumenter {
 		String[] classPaths = new String[] { "/WEB-INF/lib", "/WEB-INF/classes" };
 		logger.info("Class Paths going to be scanned for ApiDocumenter " + classPaths);
 		Set<Class> allClasses = RestApiClassUtil.getPathAnnotatedClasses(classPaths, servletContext);
-		preparePathJsonMap(allClasses);
-		return gson.toJson(getListClassMetaData());
-	}
-
-	/**
-	 * @param allClasses
-	 * @throws ClassNotFoundException
-	 */
-	@SuppressWarnings("rawtypes")
-	private void preparePathJsonMap(Set<Class> allClasses) throws ClassNotFoundException {
-		logger.debug("Preparing Map of path and respective JSON, Keyset Size  " + allClasses.size());
-		pathJsonMap = new HashMap<String, String>();
-		for (Class className : allClasses) {
-			ClassResponseEntity classInfo = apiDoc.extractClassInfo(className);
-			pathJsonMap.put(classInfo.getResourcePath(), gson.toJson(classInfo));
-		}
-		logger.debug("Path Json Map Prepared Sucessfully, Total elements " + pathJsonMap.size());
+		apiDelegate.preparePathJsonMap(allClasses);
+		return gson.toJson(apiDelegate.getListClassMetaData());
 	}
 
 	/**
@@ -95,40 +72,31 @@ public class ApiDocumenter {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getClassInfo(@PathParam("class") String className) throws IOException, ClassNotFoundException {
 		logger.debug("Going to get JSON info for the ClassName  " + className);
-		return pathJsonMap.get("/" + className);
-	}
-
-	/**
-	 * This Method will return the list of Classes having @Path annotation. from
-	 * the file already created and stored.
-	 * 
-	 * @return
-	 * @throws UnsupportedEncodingException
-	 */
-	public ApiInfo getListClassMetaData() {
-		ApiInfo apisInfo = new ApiInfo();
-		List<ClassInfo> apis = new ArrayList<ClassInfo>();
-		Set<String> pathKeySet = pathJsonMap.keySet();
-		for (String path : pathKeySet) {
-			logger.debug("Inserting " + path + " for ClassInfo ");
-			ClassInfo classDesc = new ClassInfo();
-			classDesc.setPath(path);
-			apis.add(classDesc);
-		}
-		logger.debug("Total number of path list prepared " + apis.size());
-		apisInfo.setApis(apis);
-		return apisInfo;
+		return apiDelegate.getClassInfoFromMap(className);
 	}
 
 	private void init() throws IOException {
 		Properties appProps = new Properties();
-		appProps.load(new FileInputStream(this.getClass().getResource("/ApiDoumenterConfig.properties").getPath()));
+		InputStream resourceAsStream = this.getClass().getClassLoader()
+						.getResourceAsStream("ApiDoumenterConfig.properties");
+		if (resourceAsStream != null) {
+			try {
+				appProps.load(resourceAsStream);
+			}
+			finally {
+				try {
+					resourceAsStream.close();
+				}
+				catch (Exception ignore) {
+				}
+			}
+		}
+		else
+			throw new IOException("Resource with name ApiDocumenterConfig.properties not found in the classpath.");
+
 		logger.info("Property file SwaggerConfig.properties loaded sucessfully");
-		basePath = appProps.getProperty("base.path.url");
+		basePath = appProps.getProperty(RestApiConstants.BASE_PATH_URL);
 		logger.debug("RestAPI base path url " + basePath);
-		
 	}
-
-
 
 }
