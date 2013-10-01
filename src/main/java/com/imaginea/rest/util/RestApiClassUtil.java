@@ -24,8 +24,8 @@ import com.sun.jersey.spi.scanning.servlet.WebAppResourcesScanner;
 
 public final class RestApiClassUtil {
 
-	private static final Logger LOGGER= Logger.getLogger(RestApiClassUtil.class);
-	
+	private static final Logger LOGGER = Logger.getLogger(RestApiClassUtil.class);
+
 	/**
 	 * Maps primitive {@code Class}es to their corresponding wrapper
 	 * {@code Class}.
@@ -48,6 +48,7 @@ public final class RestApiClassUtil {
 	 */
 	private static final Map<Class<?>, Class<?>> wrapperPrimitiveMap = new HashMap<Class<?>, Class<?>>();
 	static {
+		//TODO use entrySet
 		for (Class<?> primitiveClass : primitiveWrapperMap.keySet()) {
 			Class<?> wrapperClass = primitiveWrapperMap.get(primitiveClass);
 			if (!primitiveClass.equals(wrapperClass)) {
@@ -92,32 +93,30 @@ public final class RestApiClassUtil {
 		return wrapperPrimitiveMap.containsKey(type);
 	}
 
-	/*
-	 * public static Set<Class<?>> getallClasses(String basePackage){
-	 * Reflections reflections = new Reflections(basePackage); Set<Class<?>>
-	 * allClasses = reflections.getTypesAnnotatedWith(Path.class); return
-	 * allClasses; }
-	 */
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Set<Class> getannotatedClasses(Class<? extends Annotation> ac, Set<Class<?>> allAnnotatedClasses) {
-		LOGGER.debug("Searching for "+ac+" annotated classes");
+		LOGGER.debug("Searching for " + ac + " annotated classes");
 		Set<Class> s = new HashSet<Class>();
 		for (Class c : allAnnotatedClasses)
 			if (c.isAnnotationPresent(ac))
 				s.add(c);
-		LOGGER.debug("Found "+s.size()+" classes annotated with "+ac);
+		LOGGER.debug("Found " + s.size() + " classes annotated with " + ac);
 		return s;
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	public static Set<Class> getPathAnnotatedClasses(String[] args, ServletContext servletContext) {
-		LOGGER.debug("Searching got annotated classes in the locations "+args);
+		LOGGER.debug("Searching got annotated classes in the locations " + args);
 		ScanningResourceConfig config = new ScanningResourceConfig();
 		config.init(new WebAppResourcesScanner(args, servletContext));
 		Set<Class<?>> annotatedclasses = config.getClasses();
-		LOGGER.debug("Total annotated classes found "+ annotatedclasses.size());
+		LOGGER.debug("Total annotated classes found " + annotatedclasses.size());
 		return getannotatedClasses(Path.class, annotatedclasses);
+	}
+	
+	public static void main(String[] args) {
+		System.out.println("check");
 	}
 
 }
