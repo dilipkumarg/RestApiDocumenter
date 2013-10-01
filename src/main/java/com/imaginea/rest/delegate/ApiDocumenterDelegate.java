@@ -10,6 +10,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
+import com.imaginea.rest.constants.RestApiConstants;
 import com.imaginea.rest.documenter.ApiDocumenter;
 import com.imaginea.rest.model.ApiInfo;
 import com.imaginea.rest.model.ClassInfo;
@@ -40,8 +41,11 @@ public class ApiDocumenterDelegate {
 		logger.debug("Preparing Map of path and respective JSON, Keyset Size  " + allClasses.size());
 		pathJsonMap = new HashMap<String, String>();
 		for (Class className : allClasses) {
+			if(!(className ==(Class.forName(RestApiConstants.REST_API_MAIN_CLASS_NAME))))
+			{
 			ClassResponseEntity classInfo = classDoc.extractClassInfo(className);
 			pathJsonMap.put(classInfo.getResourcePath(), gson.toJson(classInfo));
+			}
 		}
 		logger.debug("Path Json Map Prepared Sucessfully, Total elements " + pathJsonMap.size());
 		return pathJsonMap;

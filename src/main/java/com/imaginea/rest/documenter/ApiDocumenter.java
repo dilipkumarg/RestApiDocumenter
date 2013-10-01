@@ -52,7 +52,7 @@ public class ApiDocumenter {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMetaInfo() throws ClassNotFoundException {
 
-		String[] classPaths = new String[] { "/WEB-INF/lib", "/WEB-INF/classes" };
+		String[] classPaths = new String[] {"/WEB-INF/lib","/WEB-INF/classes"};
 		logger.info("Class Paths going to be scanned for ApiDocumenter " + classPaths);
 		Set<Class> allClasses = RestApiClassUtil.getPathAnnotatedClasses(classPaths, servletContext);
 		apiDelegate.preparePathJsonMap(allClasses);

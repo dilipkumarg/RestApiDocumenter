@@ -1,7 +1,8 @@
 package com.imaginea.rest.constants;
 
-public class RestApiConstants {
+public final class RestApiConstants {
 
 	public static String BASE_PATH_URL="base.path.url";
+	public static String REST_API_MAIN_CLASS_NAME="com.imaginea.rest.documenter.ApiDocumenter";	
 	
 }
