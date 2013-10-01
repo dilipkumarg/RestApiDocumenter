@@ -22,9 +22,9 @@ import com.sun.jersey.spi.scanning.servlet.WebAppResourcesScanner;
  * 
  */
 
-public final class RestApiClassUtil {
+public final class RestApiClassUtilTest {
 
-	private static final Logger LOGGER = Logger.getLogger(RestApiClassUtil.class);
+	private static final Logger LOGGER = Logger.getLogger(RestApiClassUtilTest.class);
 
 	/**
 	 * Maps primitive {@code Class}es to their corresponding wrapper
