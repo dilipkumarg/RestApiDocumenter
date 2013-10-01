@@ -20,11 +20,6 @@ public class ClassDocumenter {
 
 	}
 
-	@SuppressWarnings("rawtypes")
-	public ClassResponseEntity extractClassInfo(String className) throws ClassNotFoundException {
-		Class givenClass = Class.forName(className);
-		return extractClassInfo(givenClass);
-	}
 
 	@SuppressWarnings("rawtypes")
 	public ClassResponseEntity extractClassInfo(Class className) throws ClassNotFoundException {
