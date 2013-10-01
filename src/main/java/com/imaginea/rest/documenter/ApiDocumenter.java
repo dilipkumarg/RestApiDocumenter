@@ -122,7 +122,7 @@ public class ApiDocumenter {
 
 	private void init() throws IOException {
 		Properties appProps = new Properties();
-		appProps.load(new FileInputStream(this.getClass().getResource("/SwaggerConfig.properties").getPath()));
+		appProps.load(new FileInputStream(this.getClass().getResource("/ApiDoumenterConfig.properties").getPath()));
 		logger.info("Property file SwaggerConfig.properties loaded sucessfully");
 		basePath = appProps.getProperty("base.path.url");
 		logger.debug("RestAPI base path url " + basePath);
