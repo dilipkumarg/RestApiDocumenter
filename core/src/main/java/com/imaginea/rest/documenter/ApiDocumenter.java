@@ -51,14 +51,13 @@ public class ApiDocumenter {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMetaInfo() throws ClassNotFoundException {
-
-		String[] classPaths = new String[] {"/WEB-INF/lib","/WEB-INF/classes"};
+		String[] classPaths = new String[] {"D:/STS-Workspace/RestApiDocumenter/src/main/webapp/WEB-INF/lib","D:/STS-Workspace/RestApiDocumenter/src/main/webapp/WEB-INF/classes"};
 		logger.info("Class Paths going to be scanned for ApiDocumenter " + classPaths);
-		Set<Class> allClasses = RestApiClassUtil.getPathAnnotatedClasses(classPaths, servletContext);
+		Set<Class> allClasses = RestApiClassUtil.getPathAnnotatedClasses(classPaths);
 		apiDelegate.preparePathJsonMap(allClasses);
 		return gson.toJson(apiDelegate.getListClassMetaData());
 	}
-
+	//com.sun.jersey.api.core.servlet.WebAppResourceConfig
 	/**
 	 * It will returns the class information in json information
 	 * 

@@ -3,19 +3,19 @@
  */
 package com.imaginea.rest.util;
 
+import java.io.File;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletContext;
 import javax.ws.rs.Path;
 
 import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.core.ScanningResourceConfig;
-import com.sun.jersey.spi.scanning.servlet.WebAppResourcesScanner;
+import com.sun.jersey.core.spi.scanning.FilesScanner;
 
 /**
  * @author sandeep-t
@@ -41,6 +41,8 @@ public final class RestApiClassUtil {
 		primitiveWrapperMap.put(Double.TYPE, Double.class);
 		primitiveWrapperMap.put(Float.TYPE, Float.class);
 		primitiveWrapperMap.put(Void.TYPE, Void.TYPE);
+		
+		
 	}
 
 	/**
@@ -48,6 +50,19 @@ public final class RestApiClassUtil {
 	 */
 	private static final Map<Class<?>, Class<?>> wrapperPrimitiveMap = new HashMap<Class<?>, Class<?>>();
 	static {
+		
+		wrapperPrimitiveMap.put(Boolean.class,Boolean.TYPE );
+		wrapperPrimitiveMap.put(Byte.class,Byte.TYPE );
+		wrapperPrimitiveMap.put( Character.class,Character.TYPE);
+		wrapperPrimitiveMap.put(Short.class,Short.TYPE );
+		wrapperPrimitiveMap.put( Integer.class,Integer.TYPE);
+		wrapperPrimitiveMap.put(Long.class,Long.TYPE );
+		wrapperPrimitiveMap.put( Double.class,Double.TYPE);
+		wrapperPrimitiveMap.put(Float.class,Float.TYPE );
+		wrapperPrimitiveMap.put(Void.TYPE, Void.TYPE);
+		
+		
+		/*
 		//TODO use entrySet
 		for (Class<?> primitiveClass : primitiveWrapperMap.keySet()) {
 			Class<?> wrapperClass = primitiveWrapperMap.get(primitiveClass);
@@ -55,7 +70,7 @@ public final class RestApiClassUtil {
 				wrapperPrimitiveMap.put(wrapperClass, primitiveClass);
 			}
 		}
-	}
+	*/}
 
 	/**
 	 * Returns whether the given {@code type} is a primitive or primitive
@@ -106,17 +121,30 @@ public final class RestApiClassUtil {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static Set<Class> getPathAnnotatedClasses(String[] args, ServletContext servletContext) {
+	public static Set<Class> getPathAnnotatedClasses(String[] args) {
 		LOGGER.debug("Searching got annotated classes in the locations " + args);
 		ScanningResourceConfig config = new ScanningResourceConfig();
-		config.init(new WebAppResourcesScanner(args, servletContext));
+		 final File[] files = getFilesList(args);
+		config.init(new FilesScanner(files));
 		Set<Class<?>> annotatedclasses = config.getClasses();
 		LOGGER.debug("Total annotated classes found " + annotatedclasses.size());
 		return getannotatedClasses(Path.class, annotatedclasses);
 	}
+
+	/**
+	 * @param args
+	 * @return
+	 */
+	private static File[] getFilesList(String[] args) {
+		final File[] files = new File[args.length];
+		  for (int i = 0;  i < args.length; i++) {
+	            files[i] = new File(args[i]);
+	        }
+		return files;
+	}
 	
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		System.out.println("check");
-	}*/
+	}
 
 }

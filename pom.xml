@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.imaginea.documenter</groupId>
 	<artifactId>RestApiDocumenter</artifactId>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>Jersey RestApiDocumenter</name>
 	<url>http://pramati.com</url>
@@ -72,4 +72,8 @@
 		</plugins>		
 	</build>
 
+	<modules>
+		<module>core</module>
+		<module>apiservice</module>
+	</modules>
 </project>
