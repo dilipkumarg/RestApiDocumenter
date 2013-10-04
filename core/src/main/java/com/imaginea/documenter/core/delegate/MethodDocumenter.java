@@ -1,4 +1,4 @@
-package com.imaginea.rest.delegate;
+package com.imaginea.documenter.core.delegate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 
-import com.imaginea.rest.model.MethodOperations;
-import com.imaginea.rest.model.MethodParameters;
-import com.imaginea.rest.model.MethodResponse;
+import com.imaginea.documenter.core.model.MethodOperations;
+import com.imaginea.documenter.core.model.MethodParameters;
+import com.imaginea.documenter.core.model.MethodResponse;
 import com.sun.jersey.api.model.AbstractResource;
 import com.sun.jersey.api.model.AbstractSubResourceMethod;
 import com.sun.jersey.api.model.Parameter;

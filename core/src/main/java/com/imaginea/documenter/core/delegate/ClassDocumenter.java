@@ -1,9 +1,9 @@
 /**
  * 
  */
-package com.imaginea.rest.delegate;
+package com.imaginea.documenter.core.delegate;
 
-import com.imaginea.rest.model.ClassResponseEntity;
+import com.imaginea.documenter.core.model.ClassResponseEntity;
 import com.sun.jersey.api.model.AbstractResource;
 import com.sun.jersey.server.impl.modelapi.annotation.IntrospectionModeller;
 

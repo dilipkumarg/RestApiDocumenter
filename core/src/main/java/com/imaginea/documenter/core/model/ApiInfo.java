@@ -1,4 +1,4 @@
-package com.imaginea.rest.model;
+package com.imaginea.documenter.core.model;
 
 import java.util.List;
 

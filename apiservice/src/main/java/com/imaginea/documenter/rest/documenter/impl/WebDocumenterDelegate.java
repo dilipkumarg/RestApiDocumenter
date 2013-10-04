@@ -1,4 +1,4 @@
-package com.imaginea.rest.documenter.impl;
+package com.imaginea.documenter.rest.documenter.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -10,10 +10,10 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
-import com.imaginea.rest.documenter.DataCreation;
-import com.imaginea.rest.model.ApiInfo;
-import com.imaginea.rest.model.ClassInfo;
-import com.imaginea.rest.model.ClassResponseEntity;
+import com.imaginea.documenter.core.documenter.DataCreation;
+import com.imaginea.documenter.core.model.ApiInfo;
+import com.imaginea.documenter.core.model.ClassInfo;
+import com.imaginea.documenter.core.model.ClassResponseEntity;
 
 public class WebDocumenterDelegate extends DataCreation {
 

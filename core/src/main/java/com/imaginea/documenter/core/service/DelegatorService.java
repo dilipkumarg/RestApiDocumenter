@@ -1,4 +1,4 @@
-package com.imaginea.rest.service;
+package com.imaginea.documenter.core.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +6,10 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import com.imaginea.rest.constants.RestApiConstants;
-import com.imaginea.rest.delegate.ClassDocumenter;
-import com.imaginea.rest.model.ClassResponseEntity;
-import com.imaginea.rest.util.RestApiClassUtil;
+import com.imaginea.documenter.core.constants.RestApiConstants;
+import com.imaginea.documenter.core.delegate.ClassDocumenter;
+import com.imaginea.documenter.core.model.ClassResponseEntity;
+import com.imaginea.documenter.core.util.RestApiClassUtil;
 
 public class DelegatorService {
 	private static Logger LOGGER = Logger.getLogger(DelegatorService.class);

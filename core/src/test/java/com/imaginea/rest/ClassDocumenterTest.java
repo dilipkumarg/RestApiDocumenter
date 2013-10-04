@@ -8,9 +8,9 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import com.imaginea.rest.constants.RestApiConstants;
-import com.imaginea.rest.delegate.ClassDocumenter;
-import com.imaginea.rest.model.ClassResponseEntity;
+import com.imaginea.documenter.core.constants.RestApiConstants;
+import com.imaginea.documenter.core.delegate.ClassDocumenter;
+import com.imaginea.documenter.core.model.ClassResponseEntity;
 
 public class ClassDocumenterTest {
 

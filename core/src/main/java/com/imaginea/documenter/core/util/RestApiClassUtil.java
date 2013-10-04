@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.imaginea.rest.util;
+package com.imaginea.documenter.core.util;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
@@ -137,10 +137,9 @@ public final class RestApiClassUtil {
 	 */
 	private static File[] getFilesList(String[] classPath) {
 		System.out.println("Class Path "+classPath);
-		
 		final File[] files = new File[classPath.length];
 		  for (int i = 0;  i < classPath.length; i++) {
-			  	System.out.println("System.getPropert "+System.getProperty("user.dir"));
+			  	System.out.println("System.getPropert "+System.getProperty( "catalina.base" ));
 	            files[i] = new File(classPath[i]);
 	            System.out.println("File Name "+files[i].getAbsolutePath());
 	        }

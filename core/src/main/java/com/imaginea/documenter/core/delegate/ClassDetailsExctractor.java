@@ -1,4 +1,4 @@
-package com.imaginea.rest.delegate;
+package com.imaginea.documenter.core.delegate;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -6,9 +6,9 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.imaginea.rest.model.ClassDetails;
-import com.imaginea.rest.model.ModelPropertyDiscriptor;
-import com.imaginea.rest.util.RestApiClassUtil;
+import com.imaginea.documenter.core.model.ClassDetails;
+import com.imaginea.documenter.core.model.ModelPropertyDiscriptor;
+import com.imaginea.documenter.core.util.RestApiClassUtil;
 import com.sun.jersey.api.model.AbstractResource;
 import com.sun.jersey.api.model.AbstractSubResourceMethod;
 

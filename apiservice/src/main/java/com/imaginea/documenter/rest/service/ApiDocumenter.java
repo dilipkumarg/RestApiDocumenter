@@ -1,4 +1,4 @@
-package com.imaginea.rest.service;
+package com.imaginea.documenter.rest.service;
 
 import java.io.IOException;
 
@@ -11,9 +11,9 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
-import com.imaginea.rest.constants.RestApiConstants;
-import com.imaginea.rest.documenter.impl.WebDocumenterDelegate;
-import com.imaginea.rest.util.PropertyReader;
+import com.imaginea.documenter.core.constants.RestApiConstants;
+import com.imaginea.documenter.core.util.PropertyReader;
+import com.imaginea.documenter.rest.documenter.impl.WebDocumenterDelegate;
 import com.sun.jersey.spi.resource.Singleton;
 
 @Singleton
@@ -31,10 +31,11 @@ public class ApiDocumenter {
 		/*apiDelegate = new WebDocumenterDelegate(PropertyReader.getInstance()
 						.getProperty(RestApiConstants.BASE_PATH_URL),PropertyReader.getInstance()
 						.getProperty(RestApiConstants.CLASSPATHS).split(","));*/
-		System.out.println("basepath "+PropertyReader.getInstance()
-						.getProperty(RestApiConstants.BASE_PATH_URL));
+		/*System.out.println("basepath "+PropertyReader.getInstance()
+						.getProperty(RestApiConstants.BASE_PATH_URL));*/
 		apiDelegate = new WebDocumenterDelegate(PropertyReader.getInstance()
-						.getProperty(RestApiConstants.BASE_PATH_URL),null);
+						.getProperty(RestApiConstants.BASE_PATH_URL),PropertyReader.getInstance()
+						.getProperty(RestApiConstants.CLASSPATHS).split(","));
 	}
 
 	/**

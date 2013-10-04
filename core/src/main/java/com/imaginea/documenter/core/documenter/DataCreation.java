@@ -1,10 +1,10 @@
-package com.imaginea.rest.documenter;
+package com.imaginea.documenter.core.documenter;
 
-import com.imaginea.rest.service.DelegatorService;
+import com.imaginea.documenter.core.service.DelegatorService;
 
 public abstract class DataCreation {
-	String base="D:/ProgramFiles/apache-tomcat-7.0.42/webapps/apiservice-1.0-SNAPSHOT";
-	protected String[] classPaths = new String[] {base+"/WEB-INF/lib", base+"/WEB-INF/classes" };
+	//String base="D:/ProgramFiles/apache-tomcat-7.0.42/webapps/apiservice-1.0-SNAPSHOT";
+	protected String[] classPaths = new String[] {"/WEB-INF/lib","/WEB-INF/classes" };
 	protected String basePath;
 	protected DelegatorService dlService;
 

@@ -1,4 +1,4 @@
-package com.imaginea.rest.model;
+package com.imaginea.documenter.core.model;
 
 public class ModelPropertyDiscriptor {
 	

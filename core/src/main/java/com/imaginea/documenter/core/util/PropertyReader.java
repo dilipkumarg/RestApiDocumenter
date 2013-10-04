@@ -1,4 +1,4 @@
-package com.imaginea.rest.util;
+package com.imaginea.documenter.core.util;
 
 import java.io.IOException;
 import java.io.InputStream;

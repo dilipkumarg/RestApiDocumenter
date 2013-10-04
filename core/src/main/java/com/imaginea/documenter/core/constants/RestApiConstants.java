@@ -1,4 +1,4 @@
-package com.imaginea.rest.constants;
+package com.imaginea.documenter.core.constants;
 
 public final class RestApiConstants {
 
