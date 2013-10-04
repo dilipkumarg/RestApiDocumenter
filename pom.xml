@@ -37,16 +37,9 @@
 			<version>2.2.4</version>
 		</dependency>
 
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.4</version>
-		</dependency>
-
-
 	</dependencies>
 
-	<build>
+	<!-- <build>
 		<finalName>RestApiDocumenter</finalName>
 		<plugins>
 			<plugin>
@@ -70,7 +63,7 @@
                         </configuration>
                 </plugin>
 		</plugins>		
-	</build>
+	</build> -->
 
 	<modules>
 		<module>core</module>

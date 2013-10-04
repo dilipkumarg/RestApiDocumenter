@@ -1,9 +1,6 @@
 package com.imaginea.rest.service;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.Set;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -17,7 +14,6 @@ import com.google.gson.Gson;
 import com.imaginea.rest.constants.RestApiConstants;
 import com.imaginea.rest.documenter.impl.WebDocumenterDelegate;
 import com.imaginea.rest.util.PropertyReader;
-import com.imaginea.rest.util.RestApiClassUtil;
 import com.sun.jersey.spi.resource.Singleton;
 
 @Singleton
@@ -28,13 +24,17 @@ public class ApiDocumenter {
 	private Gson gson;
 	private WebDocumenterDelegate apiDelegate;
 
-	String basePath;
+	
 
 	public ApiDocumenter() throws IOException {
 		gson = new Gson();
-		apiDelegate = new WebDocumenterDelegate(PropertyReader.getInstance()
+		/*apiDelegate = new WebDocumenterDelegate(PropertyReader.getInstance()
 						.getProperty(RestApiConstants.BASE_PATH_URL),PropertyReader.getInstance()
-						.getProperty(RestApiConstants.CLASSPATHS).split(","));
+						.getProperty(RestApiConstants.CLASSPATHS).split(","));*/
+		System.out.println("basepath "+PropertyReader.getInstance()
+						.getProperty(RestApiConstants.BASE_PATH_URL));
+		apiDelegate = new WebDocumenterDelegate(PropertyReader.getInstance()
+						.getProperty(RestApiConstants.BASE_PATH_URL),null);
 	}
 
 	/**

@@ -1,20 +1,7 @@
 package com.imaginea.rest;
 
-import static org.junit.Assert.assertEquals;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import org.junit.Test;
-
-import com.imaginea.rest.constants.RestApiConstants;
-import com.imaginea.rest.delegate.ApiDocumenterDelegate;
-
-public class TestApiDocumenterDelegate {
+public class TestApiDocumenterDelegate {/*
 
 	String classString;
 	String basePath;
@@ -76,4 +63,4 @@ public class TestApiDocumenterDelegate {
 
 	}
 
-}
+*/}

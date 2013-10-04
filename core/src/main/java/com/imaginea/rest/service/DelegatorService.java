@@ -28,6 +28,7 @@ public class DelegatorService {
 		for (Class className : classList) {
 			if (!(className == (Class.forName(RestApiConstants.REST_API_MAIN_CLASS_NAME)))) {
 				ClassResponseEntity classInfo = classDoc.extractClassInfo(className);
+				classesInfo.add(classInfo);
 			}
 		}
 		return classesInfo;

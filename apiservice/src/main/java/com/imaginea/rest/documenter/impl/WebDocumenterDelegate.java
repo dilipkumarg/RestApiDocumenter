@@ -22,7 +22,7 @@ public class WebDocumenterDelegate extends DataCreation {
 	private Gson gson;
 
 	public WebDocumenterDelegate(String basePath, String[] classPaths) {
-		super(classPaths, basePath);
+		super(basePath,classPaths);
 		gson = new Gson();
 	}
 

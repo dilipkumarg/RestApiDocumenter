@@ -121,10 +121,10 @@ public final class RestApiClassUtil {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static Set<Class> getPathAnnotatedClasses(String[] args) {
-		LOGGER.debug("Searching got annotated classes in the locations " + args);
+	public static Set<Class> getPathAnnotatedClasses(String[] classPath) {
+		LOGGER.debug("Searching got annotated classes in the locations " + classPath);
 		ScanningResourceConfig config = new ScanningResourceConfig();
-		 final File[] files = getFilesList(args);
+		 final File[] files = getFilesList(classPath);
 		config.init(new FilesScanner(files));
 		Set<Class<?>> annotatedclasses = config.getClasses();
 		LOGGER.debug("Total annotated classes found " + annotatedclasses.size());
@@ -132,14 +132,20 @@ public final class RestApiClassUtil {
 	}
 
 	/**
-	 * @param args
+	 * @param classPath
 	 * @return
 	 */
-	private static File[] getFilesList(String[] args) {
-		final File[] files = new File[args.length];
-		  for (int i = 0;  i < args.length; i++) {
-	            files[i] = new File(args[i]);
+	private static File[] getFilesList(String[] classPath) {
+		System.out.println("Class Path "+classPath);
+		
+		final File[] files = new File[classPath.length];
+		  for (int i = 0;  i < classPath.length; i++) {
+			  	System.out.println("System.getPropert "+System.getProperty("user.dir"));
+	            files[i] = new File(classPath[i]);
+	            System.out.println("File Name "+files[i].getAbsolutePath());
 	        }
+		  
+		  System.out.println("File List Size "+files.length);
 		return files;
 	}
 	
