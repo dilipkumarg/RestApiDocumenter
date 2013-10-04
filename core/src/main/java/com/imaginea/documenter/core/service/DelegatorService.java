@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import com.imaginea.documenter.core.constants.RestApiConstants;
 import com.imaginea.documenter.core.delegate.ClassDocumenter;
 import com.imaginea.documenter.core.model.ClassResponseEntity;
 import com.imaginea.documenter.core.util.RestApiClassUtil;
@@ -21,6 +20,7 @@ public class DelegatorService {
 		this.classPaths = classPaths;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public List<ClassResponseEntity> extractClassesInfo() throws ClassNotFoundException {
 		Set<Class> classList = RestApiClassUtil.getPathAnnotatedClasses(classPaths);
 		if(LOGGER.isDebugEnabled()){

@@ -1,5 +1,7 @@
 package com.imaginea.documenter.core.documenter;
 
+import java.io.IOException;
+
 import com.imaginea.documenter.core.service.DelegatorService;
 
 public abstract class DataCreation {
@@ -16,6 +18,6 @@ public abstract class DataCreation {
 		dlService = new DelegatorService(basePath, this.classPaths);
 	}
 
-	public abstract void createData() throws ClassNotFoundException ;
+	public abstract void createData() throws ClassNotFoundException, IOException ;
 
 }

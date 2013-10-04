@@ -45,7 +45,6 @@ public class ApiDocumenter {
 	 * @return
 	 * @throws ClassNotFoundException
 	 */
-	@SuppressWarnings("rawtypes")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMetaInfo() throws ClassNotFoundException {
