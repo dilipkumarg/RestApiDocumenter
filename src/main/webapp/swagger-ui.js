@@ -28,7 +28,7 @@ function toggleTryOut(divId) {
 function disableTryOut() {
     var target = $("li.operation");
     target.addClass("disabled");
-    target.find("input:not(.cb-tryout)").attr("disabled", "disabled");
+    target.find("form.sandbox input").attr("disabled", "disabled");
 }
 
 $(function () {
