@@ -19,13 +19,17 @@ public class MethodDocumenter {
 	private final Logger logger = Logger.getLogger(MethodDocumenter.class);
 
 	public List<MethodResponse> extractMethodsInfo(AbstractResource absResource) {
+		if(logger.isDebugEnabled()){
 		logger.debug("extracting methods information for: " + absResource.getPath());
+		}
 		List<MethodResponse> methodResponseList = new ArrayList<MethodResponse>();
 		for (AbstractSubResourceMethod subResourceModel : absResource.getSubResourceMethods()) {
 			MethodResponse mResponse = new MethodResponse();
 			// adding resource path to the method path
 			mResponse.setPath(getMethodPath(absResource.getPath().getValue(), subResourceModel.getPath().getValue()));
+			if(logger.isDebugEnabled()){
 			logger.debug("found path: " + mResponse.getPath());
+			}
 			mResponse.setOperations(extractMethodOperationDetails(subResourceModel));
 			methodResponseList.add(mResponse);
 		}

@@ -66,7 +66,9 @@ public class ApiDocumenter {
 	@Path("/{class: .*}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getClassInfo(@PathParam("class") String className) throws IOException, ClassNotFoundException {
+		if(logger.isDebugEnabled()){
 		logger.debug("Going to get JSON info for the ClassName  " + className);
+		}
 		return apiDelegate.getClassInfoFromMap(className);
 	}
 

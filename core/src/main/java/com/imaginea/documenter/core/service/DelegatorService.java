@@ -23,11 +23,13 @@ public class DelegatorService {
 
 	public List<ClassResponseEntity> extractClassesInfo() throws ClassNotFoundException {
 		Set<Class> classList = RestApiClassUtil.getPathAnnotatedClasses(classPaths);
+		if(LOGGER.isDebugEnabled()){
 		LOGGER.debug("Preparing Map of path and respective JSON, Keyset Size  " + classList.size());
+		}
 		List<ClassResponseEntity> classesInfo = new ArrayList<ClassResponseEntity>();
 		for (Class className : classList) {
-			if (!(className == (Class.forName(RestApiConstants.REST_API_MAIN_CLASS_NAME)))) {
-				ClassResponseEntity classInfo = classDoc.extractClassInfo(className);
+			ClassResponseEntity classInfo = classDoc.extractClassInfo(className);
+			if (!classInfo.getResourcePath().equalsIgnoreCase("/apidocs")) {
 				classesInfo.add(classInfo);
 			}
 		}

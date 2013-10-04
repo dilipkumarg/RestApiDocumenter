@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public final class PropertyReader {
+	
 	private static PropertyReader instance;
 	Properties appProps;
 	final String FILE_NAME = "ApiDoumenterConfig.properties";
@@ -15,11 +16,10 @@ public final class PropertyReader {
 	}
 
 	public static PropertyReader getInstance() throws IOException {
-
 		if (instance == null) {
-			synchronized (PropertyReader.class) { // 1
-				if (instance == null) // 2
-					instance = new PropertyReader(); // 3
+			synchronized (PropertyReader.class) {
+				if (instance == null) 
+					instance = new PropertyReader();
 			}
 		}
 		return instance;

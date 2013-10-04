@@ -38,12 +38,16 @@ public class WebDocumenterDelegate extends DataCreation {
 		List<ClassInfo> apis = new ArrayList<ClassInfo>();
 		Set<String> pathKeySet = pathJsonMap.keySet();
 		for (String path : pathKeySet) {
+			if(LOGGER.isDebugEnabled()){
 			LOGGER.debug("Inserting " + path + " for ClassInfo ");
+			}
 			ClassInfo classDesc = new ClassInfo();
 			classDesc.setPath(path);
 			apis.add(classDesc);
 		}
+		if(LOGGER.isDebugEnabled()){
 		LOGGER.debug("Total number of path list prepared " + apis.size());
+		}
 		apisInfo.setApis(apis);
 		return apisInfo;
 	}
@@ -60,7 +64,9 @@ public class WebDocumenterDelegate extends DataCreation {
 		for (ClassResponseEntity classInfo : classesInfo) {
 			pathJsonMap.put(classInfo.getResourcePath(), gson.toJson(classInfo));
 		}
+		if(LOGGER.isDebugEnabled()){
 		LOGGER.debug("Path Json Map Prepared Sucessfully, Total elements " + pathJsonMap.size());
+		}
 	}
 
 }
