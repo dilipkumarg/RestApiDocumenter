@@ -28,7 +28,7 @@ function toggleTryOut(divId) {
 function disableTryOut() {
     var target = $("li.operation");
     target.addClass("disabled");
-    target.find("input:not(.cb-tryout)").attr("disabled", "disabled");
+    target.find("form.sandbox input").attr("disabled", "disabled");
 }
 
 $(function () {
@@ -409,7 +409,7 @@ var Docs = {
         function program5(depth0, data) {
 
 
-            return "\n<label><input type='checkbox' class='checkbox cb-tryout' onclick=\"toggleTryOut('" + depth0.methodId + "')\"/> Wanna Try out?</label>\n <h4>Parameters</h4>\n          <table class='fullwidth'>\n          <thead>\n            <tr>\n            <th style=\"width: 100px; max-width: 100px\">Parameter</th>\n            <th style=\"width: 310px; max-width: 310px\">Value</th>\n               <th style=\"width: 120px; max-width: 120px\">Parameter Type</th>\n            <th style=\"width: 300px; max-width: 310px\">Data Type</th>\n            </tr>\n          </thead>\n          <tbody class=\"operation-params\">\n\n          </tbody>\n          </table>\n          ";
+            return "\n <h4>Parameters</h4>\n          <table class='fullwidth'>\n          <thead>\n            <tr>\n            <th style=\"width: 100px; max-width: 100px\">Parameter</th>\n            <th style=\"width: 310px; max-width: 310px\">Value</th>\n               <th style=\"width: 120px; max-width: 120px\">Parameter Type</th>\n            <th style=\"width: 300px; max-width: 310px\">Data Type</th>\n            </tr>\n          </thead>\n          <tbody class=\"operation-params\">\n\n          </tbody>\n          </table>\n          ";
         }
 
         function program7(depth0, data) {
@@ -657,7 +657,7 @@ var Docs = {
         if (stack1 || stack1 === 0) {
             buffer += stack1;
         }
-        buffer += "\n        <form accept-charset='UTF-8' class='sandbox'>\n          <div style='margin:0;padding:0;display:inline'></div>\n          ";
+        buffer += "\n<label class='tryout'><input type='checkbox' class='checkbox cb-tryout' onclick=\"toggleTryOut('" + depth0.methodId + "')\"/> Wanna Try out?</label> \n        <form accept-charset='UTF-8' class='sandbox'>\n          <div style='margin:0;padding:0;display:inline'></div>\n          ";
         stack1 = helpers['if'].call(depth0, depth0.parameters, {hash: {}, inverse: self.noop, fn: self.program(5, program5, data), data: data});
         if (stack1 || stack1 === 0) {
             buffer += stack1;
@@ -1560,11 +1560,22 @@ var Docs = {
         }
         buffer += escapeExpression(stack1)
             + "');\">";
-        if (stack1 = helpers.name) {
+        /*if (stack1 = helpers.name) {
+         stack1 = stack1.call(depth0, {hash: {}, data: data});
+         }
+         else {
+         stack1 = depth0.name;
+         stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+         }*/
+        // edited for printing path instead of sub path name i.e /test/foo
+        if (stack1 = helpers.path) {
             stack1 = stack1.call(depth0, {hash: {}, data: data});
         }
         else {
-            stack1 = depth0.name;
+            stack1 = depth0.path;
+            if (stack1) {
+                stack1 = (stack1[0] === "/") ? stack1.substr(1) : stack1;
+            }
             stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
         }
         buffer += escapeExpression(stack1)

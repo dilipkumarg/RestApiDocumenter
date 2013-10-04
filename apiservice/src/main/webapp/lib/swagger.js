@@ -979,10 +979,11 @@
           requestContentType = null;
         }
       }
-      if (requestContentType && this.operation.consumes) {
+      // edited for fixing requestContentType bug
+      if ( (requestContentType === null) && this.operation.consumes) {
         if (this.operation.consumes.indexOf(requestContentType) === -1) {
           console.log("server doesn't consume " + requestContentType + ", try " + JSON.stringify(this.operation.consumes));
-          if (this.requestContentType === null) {
+          if ( (this.requestContentType === null) || (typeof this.requestContentType === 'undefined')) {
             requestContentType = this.operation.consumes[0];
           }
         }

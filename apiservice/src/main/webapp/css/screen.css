@@ -1797,3 +1797,15 @@ body ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operatio
 body ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation.disabled div.content div.response {
     display: none;
 }
+
+label.tryout {
+    color: #0f6ab4;
+    font-size: 16px;
+    font-weight: 500;
+    /*margin: 0 15px 0 0;*/
+}
+
+div.response-content-type>div {
+    float: right;
+    margin-right: 20px;
+}
