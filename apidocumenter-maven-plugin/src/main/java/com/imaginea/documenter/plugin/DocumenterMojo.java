@@ -13,6 +13,7 @@ import org.apache.maven.plugin.MojoFailureException;
  * @goal document
  * 
  * @phase compile
+ * @configurator include-project-dependencies
  * @requiresDependencyResolution runtime
  */
 public class DocumenterMojo extends AbstractMojo {
@@ -58,21 +59,22 @@ public class DocumenterMojo extends AbstractMojo {
 	/**
 	 * Location to dump output files
 	 * 
-	 * @parameter
+	 * @parameter default-value="generated"
 	 * 
 	 */
 	private String docOutDir;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
+		basePath = (basePath == null) ? "/rest/services" : basePath;
+
 		try {
-			docOutDir = (docOutDir == null) ? getProjectBuildDir() : docOutDir;
-			basePath = (basePath == null) ? "/rest/services" : basePath;
-		} catch (IOException e) {
-			getLog().error(e.getMessage());
+			this.classPaths = getClassPaths();
+		} catch (IOException e2) {
+			getLog().error(e2.getMessage());
 			return;
 		}
-		this.classPaths = getClassPaths();
-		FileDataCreation fileData = new FileDataCreation(basePath, classPaths, docOutDir);
+		FileDataCreation fileData;
+		fileData = new FileDataCreation(basePath, classPaths, docOutDir);
 		try {
 			fileData.createData();
 		} catch (ClassNotFoundException e) {
@@ -83,15 +85,18 @@ public class DocumenterMojo extends AbstractMojo {
 
 	}
 
-	private String[] getClassPaths() {
-		String[] classPaths = new String[] { "WEB-INF/lib", "WEB-INF/classes" };
+	private String[] getClassPaths() throws IOException {
+		// String[] classPaths = new String[] { "WEB-INF/lib", "WEB-INF/classes"
+		// };
+		String[] classPaths = new String[] { "WEB-INF/classes", "WEB-INF/lib" };
 		for (int i = 0; i < classPaths.length; i++) {
-			classPaths[i] = docOutDir + File.separator + classPaths[i];
+			classPaths[i] = new File(buildDir, finalName).getCanonicalPath() + File.separator
+					+ classPaths[i];
 		}
 		return classPaths;
 	}
 
-	private String getProjectBuildDir() throws IOException {
+	/*private String getProjectBuildDir() throws IOException {
 		String dirName = buildDir.getCanonicalPath();
 		if (finalName != null) {
 			dirName = dirName + File.separator + finalName;
@@ -99,6 +104,6 @@ public class DocumenterMojo extends AbstractMojo {
 			dirName = dirName + File.separator + artifactId + "-" + version;
 		}
 		return dirName;
-	}
+	}*/
 
 }
