@@ -65,6 +65,7 @@ public class DocumenterMojo extends AbstractMojo {
 	private String docOutDir;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
+		
 		basePath = (basePath == null) ? "/rest/services" : basePath;
 
 		try {
