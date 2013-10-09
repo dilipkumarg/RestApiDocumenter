@@ -22,7 +22,7 @@ public class ApiDocument {
 
 		int i = 1;
 		for (MethodResponse api : this.classRes.getApis()) {
-			sb.append(new Api(index + "." + i++, basePath, api).toMarkDown());
+			sb.append(new Api(index + "." + i++, basePath, api).toMarkDown() + "\n");
 		}
 		return sb.toString();
 	}

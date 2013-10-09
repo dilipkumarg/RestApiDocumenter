@@ -24,7 +24,7 @@ public class Operation {
 		sb.append("**" + operation.getMethod() + "**  `" + path + "` \n");
 
 		sb.append("###### URL\n");
-		sb.append(basePath + path + "\n");
+		sb.append("\t" + basePath + path + "\n");
 
 		sb.append("######Parameters\n");
 		sb.append(getParams());
@@ -39,25 +39,25 @@ public class Operation {
 	private String getTableHeader() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table>\n");
-		sb.append("<tr>\n");
-		sb.append("<th>Parameter</th>\n");
-		sb.append("<th>Required</th>\n");
-		sb.append("<th>Type</th>\n");
-		sb.append("<th>Data Type</th>\n");
-		sb.append("</tr>\n");
+		sb.append("\t<tr>\n");
+		sb.append("\t\t<th>Parameter</th>\n");
+		sb.append("\t\t<th>Required</th>\n");
+		sb.append("\t\t<th>Type</th>\n");
+		sb.append("\t\t\t<th>Data Type</th>\n");
+		sb.append("\t</tr>\n");
 		return sb.toString();
 	}
 
 	private String getRowForParam(MethodParameters param) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<tr>\n");
+		sb.append("\t<tr>\n");
 
-		sb.append("<th>" + param.getName() + "</th>\n");
-		sb.append("<th>" + param.isRequired() + "</th>\n");
-		sb.append("<th>" + param.getParamType() + "</th>\n");
-		sb.append("<th>" + param.getType() + "</th>\n");
+		sb.append("\t\t<td>" + param.getName() + "</td>\n");
+		sb.append("\t\t<td>" + param.isRequired() + "</td>\n");
+		sb.append("\t\t<td>" + param.getParamType() + "</td>\n");
+		sb.append("\t\t<td>" + param.getType() + "</td>\n");
 
-		sb.append("</tr>\n");
+		sb.append("\t</tr>\n");
 		return sb.toString();
 	}
 
@@ -69,7 +69,7 @@ public class Operation {
 			sb.append(getRowForParam(param));
 		}
 
-		sb.append("</table>\n");
+		sb.append("</table>\n\n");
 
 		return sb.toString();
 	}

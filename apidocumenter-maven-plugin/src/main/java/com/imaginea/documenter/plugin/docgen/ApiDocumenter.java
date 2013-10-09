@@ -64,7 +64,7 @@ public class ApiDocumenter {
 		sb.append("##Data Types\n");
 		for (Entry<String, ClassDetails> key : getUniqueModels(classRes)
 				.entrySet()) {
-			sb.append(new ModelDoc(key.getValue()).toMarkDown());
+			sb.append(new ModelDoc(key.getValue()).toMarkDown() + "\n");
 		}
 
 		sb.append(getFooter());
