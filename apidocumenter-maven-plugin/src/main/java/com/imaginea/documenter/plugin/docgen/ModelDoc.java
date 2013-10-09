@@ -16,11 +16,11 @@ public class ModelDoc {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("<table>\n");
-		sb.append("<tr>\n");
-		sb.append("<th>name</th>\n");
-		sb.append("<th>type</th>\n");
-		sb.append("<th>description</th>\n");
-		sb.append("</tr>\n");
+		sb.append("\t<tr>\n");
+		sb.append("\t\t<th>name</th>\n");
+		sb.append("\t\t<th>type</th>\n");
+		sb.append("\t\t<th>description</th>\n");
+		sb.append("\t</tr>\n");
 
 		return sb.toString();
 	}
@@ -28,11 +28,11 @@ public class ModelDoc {
 	private String getRow(ModelPropertyDiscriptor desc) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("<tr>\n");
-		sb.append("<td>" + desc.getPropertyName() + "<td>\n");
-		sb.append("<td>" + desc.getType() + "<td>\n");
-		sb.append("<td>" + desc.getDescription() + "<td>\n");
-		sb.append("</tr>\n");
+		sb.append("\t<tr>\n");
+		sb.append("\t\t<td>" + desc.getPropertyName() + "</td>\n");
+		sb.append("\t\t<td>" + desc.getType() + "</td>\n");
+		sb.append("\t\t<td>" + desc.getDescription() + "</td>\n");
+		sb.append("\t</tr>\n");
 
 		return sb.toString();
 	}

@@ -16,7 +16,7 @@ import com.imaginea.documenter.plugin.docgen.ApiDocumenter;
 
 public class FileDataCreation extends DataCreation {
 	private final String MANIFEST_NAME = "apidocs";
-	private final String ROOT_FOLDER = "apidocumenter";
+	private final String HTML_FILE_NAME = "apidocs.html";
 	private String docOutDirPath;
 	private Gson gson;
 
@@ -35,8 +35,21 @@ public class FileDataCreation extends DataCreation {
 		createDirIfExists(outputDir);
 		dumpManifestFile(outputDir, createManifestObj(classResList));
 		dumpClasses(outputDir, classResList);
-		System.out.println(new ApiDocumenter(classResList, MANIFEST_NAME)
-				.toMarkDown());
+		dumpHtmlFile(outputDir,
+				new ApiDocumenter(classResList, this.basePath).toMarkDown());
+	}
+
+	private void dumpHtmlFile(File outFile, String html) throws IOException {
+		File htmlFile = new File(outFile, HTML_FILE_NAME);
+		htmlFile.createNewFile();
+		FileWriter os = null;
+		try {
+			os = new FileWriter(htmlFile);
+			os.write(html);
+			os.flush();
+		} finally {
+			os.close();
+		}
 	}
 
 	private File createFile(File resourceDir, String resource) {
@@ -66,13 +79,11 @@ public class FileDataCreation extends DataCreation {
 		} finally {
 			fw.close();
 		}
-		System.out.println(gson.toJson(classRes, ClassResponseEntity.class));
 
 	}
 
 	private void dumpClasses(File docOutDir,
 			List<ClassResponseEntity> classResList) throws IOException {
-		System.out.println("\n************* classes info ********** \n");
 		File resourceDir = createResourceDirectory(docOutDir);
 		for (ClassResponseEntity classRes : classResList) {
 			dumpClass(resourceDir, classRes);
@@ -99,12 +110,9 @@ public class FileDataCreation extends DataCreation {
 
 	private void dumpManifestFile(File outFile, ApiInfo apiInfo)
 			throws IOException {
-		System.out.println(gson.toJson(apiInfo, ApiInfo.class));
-
 		File manifFile = new File(outFile, MANIFEST_NAME + ".json");
 		manifFile.createNewFile();
 		FileWriter os = null;
-		System.out.println(manifFile.getCanonicalPath());
 		try {
 			os = new FileWriter(manifFile);
 			os.write(gson.toJson(apiInfo));
@@ -112,15 +120,6 @@ public class FileDataCreation extends DataCreation {
 		} finally {
 			os.close();
 		}
-
-	}
-
-	private String getFilePath(String context, String fileName) {
-		context = (context.endsWith(File.separator)) ? context.substring(0,
-				context.length() - 1) : context;
-		fileName = (fileName.startsWith(File.separator)) ? fileName
-				.substring(1) : fileName;
-		return context + File.separator + fileName;
 	}
 
 	private void deleteRecursively(File root) {
