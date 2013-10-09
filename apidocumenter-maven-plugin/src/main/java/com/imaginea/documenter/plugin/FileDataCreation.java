@@ -12,6 +12,7 @@ import com.imaginea.documenter.core.documenter.DataCreation;
 import com.imaginea.documenter.core.model.ApiInfo;
 import com.imaginea.documenter.core.model.ClassInfo;
 import com.imaginea.documenter.core.model.ClassResponseEntity;
+import com.imaginea.documenter.plugin.docgen.ApiDocumenter;
 
 public class FileDataCreation extends DataCreation {
 	private final String MANIFEST_NAME = "apidocs";
@@ -31,10 +32,11 @@ public class FileDataCreation extends DataCreation {
 	public void createData() throws ClassNotFoundException, IOException {
 		List<ClassResponseEntity> classResList = dlService.extractClassesInfo();
 		File outputDir = new File(docOutDirPath);
-		System.out.println(outputDir.getCanonicalPath());
 		createDirIfExists(outputDir);
 		dumpManifestFile(outputDir, createManifestObj(classResList));
 		dumpClasses(outputDir, classResList);
+		System.out.println(new ApiDocumenter(classResList, MANIFEST_NAME)
+				.toMarkDown());
 	}
 
 	private File createFile(File resourceDir, String resource) {
