@@ -69,7 +69,7 @@ public class Operation {
 			sb.append(getRowForParam(param));
 		}
 
-		sb.append("</table>\n");
+		sb.append("</table>\n\n");
 
 		return sb.toString();
 	}

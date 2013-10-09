@@ -22,7 +22,7 @@ public class Api {
 		for (MethodOperations operation : api.getOperations()) {
 			Operation operationDoc = new Operation(index + "." + i++,
 					api.getPath(), operation, basePath);
-			sb.append(operationDoc.toMarkDown());
+			sb.append(operationDoc.toMarkDown() + "\n");
 		}
 
 		return sb.toString();

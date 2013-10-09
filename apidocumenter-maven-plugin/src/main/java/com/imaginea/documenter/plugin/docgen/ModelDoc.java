@@ -50,7 +50,7 @@ public class ModelDoc {
 				sb.append(getRow(key.getValue()));
 			}
 		}
-		sb.append("</table>\n");
+		sb.append("</table>\n\n");
 
 		return sb.toString();
 	}
