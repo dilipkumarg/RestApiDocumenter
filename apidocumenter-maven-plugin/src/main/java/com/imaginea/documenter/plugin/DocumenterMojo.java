@@ -44,7 +44,7 @@ public class DocumenterMojo extends AbstractMojo {
 	/**
 	 * Location to dump output files
 	 * 
-	 * @parameter default-value="generated"
+	 * @parameter default-value="restApidocs"
 	 * 
 	 */
 	private String docOutDir;
@@ -55,6 +55,9 @@ public class DocumenterMojo extends AbstractMojo {
 	 * @parameter
 	 */
 	private List<String> includeJarFolders;
+	
+	
+	String baseDir;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		
@@ -68,6 +71,9 @@ public class DocumenterMojo extends AbstractMojo {
 		}
 
 		FileDataCreation fileData;
+		if(docOutDir.equals("restApidocs")){
+		docOutDir=baseDir+File.separator+docOutDir;
+		}
 		fileData = new FileDataCreation(basePath, classPaths, docOutDir);
 		try {
 			fileData.createData();
@@ -80,7 +86,9 @@ public class DocumenterMojo extends AbstractMojo {
 	}
 
 	private String[] getClassPaths() throws IOException {
-		String baseDir = new File(buildDir, finalName).getCanonicalPath();
+		
+		System.out.println("Biuild Directory "+buildDir);
+		 baseDir = new File(buildDir, finalName).getCanonicalPath();
 		List<String> classPaths = new ArrayList<String>();
 		classPaths
 				.add(buildDir.getCanonicalPath() + File.separator + "classes");
