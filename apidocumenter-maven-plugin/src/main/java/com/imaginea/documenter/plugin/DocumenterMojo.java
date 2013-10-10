@@ -2,6 +2,8 @@ package com.imaginea.documenter.plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -12,7 +14,7 @@ import org.apache.maven.plugin.MojoFailureException;
  * 
  * @goal document
  * 
- * @phase compile
+ * @phase install
  * @configurator include-project-dependencies
  * @requiresDependencyResolution runtime
  */
@@ -40,23 +42,6 @@ public class DocumenterMojo extends AbstractMojo {
 	private String basePath;
 
 	/**
-	 * @parameter expression="${project.artifactId}"
-	 */
-	private String artifactId;
-	/**
-	 * @parameter expression="${project.version}"
-	 */
-	private String version;
-
-	/**
-	 * Location of the file
-	 * 
-	 * @parameter
-	 * 
-	 */
-	private String[] classPaths;
-
-	/**
 	 * Location to dump output files
 	 * 
 	 * @parameter default-value="generated"
@@ -64,16 +49,24 @@ public class DocumenterMojo extends AbstractMojo {
 	 */
 	private String docOutDir;
 
+	/**
+	 * Locations to scan jar files
+	 * 
+	 * @parameter
+	 */
+	private List<String> includeJarFolders;
+
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		
 		basePath = (basePath == null) ? "/rest/services" : basePath;
-
+		String[] classPaths = null;
 		try {
-			this.classPaths = getClassPaths();
-		} catch (IOException e2) {
-			getLog().error(e2.getMessage());
+			classPaths = getClassPaths();
+		} catch (IOException e1) {
+			getLog().error(e1.getMessage());
 			return;
 		}
+
 		FileDataCreation fileData;
 		fileData = new FileDataCreation(basePath, classPaths, docOutDir);
 		try {
@@ -87,24 +80,17 @@ public class DocumenterMojo extends AbstractMojo {
 	}
 
 	private String[] getClassPaths() throws IOException {
-		// String[] classPaths = new String[] { "WEB-INF/lib", "WEB-INF/classes"
-		// };
-		String[] classPaths = new String[] { "WEB-INF/classes", "WEB-INF/lib" };
-		for (int i = 0; i < classPaths.length; i++) {
-			classPaths[i] = new File(buildDir, finalName).getCanonicalPath() + File.separator
-					+ classPaths[i];
+		String baseDir = new File(buildDir, finalName).getCanonicalPath();
+		List<String> classPaths = new ArrayList<String>();
+		classPaths
+				.add(buildDir.getCanonicalPath() + File.separator + "classes");
+		if(includeJarFolders!=null){
+		for (String jarFolder : includeJarFolders) {
+			classPaths.add(baseDir + File.separator + jarFolder);
 		}
-		return classPaths;
-	}
+		}
+		return classPaths.toArray(new String[] {});
 
-	/*private String getProjectBuildDir() throws IOException {
-		String dirName = buildDir.getCanonicalPath();
-		if (finalName != null) {
-			dirName = dirName + File.separator + finalName;
-		} else {
-			dirName = dirName + File.separator + artifactId + "-" + version;
-		}
-		return dirName;
-	}*/
+	}
 
 }

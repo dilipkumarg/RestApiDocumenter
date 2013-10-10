@@ -18,7 +18,6 @@ import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
-
 /**
  * A custom ComponentConfigurator which adds the project's runtime classpath
  * elements to the
@@ -33,6 +32,8 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
  */
 public class IncludeProjectDependenciesComponentConfigurator extends
 		AbstractComponentConfigurator {
+
+	private final String JAR_CONFIG_ENTRY = "includeJarFolders";
 
 	public void configureComponent(Object component,
 			PlexusConfiguration configuration,
@@ -50,27 +51,24 @@ public class IncludeProjectDependenciesComponentConfigurator extends
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private void addProjectDependenciesToClassRealm(
 			ExpressionEvaluator expressionEvaluator, ClassRealm containerRealm)
 			throws ComponentConfigurationException {
 		List<String> runtimeClasspathElements;
 		try {
 			// noinspection unchecked
-			/*
-			 * runtimeClasspathElements = (List<String>) expressionEvaluator
-			 * .evaluate("${project.runtimeClasspathElements}");
-			 */
-			runtimeClasspathElements = retrieveCustomJars(expressionEvaluator);
-			MojoExecution mojoExec = (MojoExecution) expressionEvaluator
-					.evaluate("${mojo}");
-			Xpp3Dom attributes = mojoExec.getConfiguration();
-			System.out.println(attributes.getChild("basePath").getValue());
+
+			runtimeClasspathElements = (List<String>) expressionEvaluator
+					.evaluate("${project.runtimeClasspathElements}");
 
 		} catch (ExpressionEvaluationException e) {
 			throw new ComponentConfigurationException(
 					"There was a problem evaluating: ${project.runtimeClasspathElements}",
 					e);
 		}
+		runtimeClasspathElements
+				.addAll(retrieveCustomJars(expressionEvaluator));
 
 		// Add the project dependencies to the ClassRealm
 		final URL[] urls = buildURLs(runtimeClasspathElements);
@@ -79,18 +77,40 @@ public class IncludeProjectDependenciesComponentConfigurator extends
 		}
 	}
 
+	private List<String> getJarFoldersFromConfig(
+			ExpressionEvaluator expressionEvaluator)
+			throws ComponentConfigurationException {
+		List<String> dirs = new ArrayList<String>();
+		MojoExecution mojoExec;
+		try {
+			mojoExec = (MojoExecution) expressionEvaluator.evaluate("${mojo}");
+		} catch (ExpressionEvaluationException e) {
+			throw new ComponentConfigurationException(
+					"There was a problem evaluating: ${mojo}", e);
+		}
+		Xpp3Dom jarFolders = mojoExec.getConfiguration().getChild(
+				JAR_CONFIG_ENTRY);
+		if (jarFolders != null) {
+			for (int i = 0; i < jarFolders.getChildCount(); i++) {
+				dirs.add(jarFolders.getChild(i).getValue());
+			}
+		}
+
+		return dirs;
+	}
+
 	private File getProjectBuildRoot(ExpressionEvaluator expressionEvaluator)
 			throws ComponentConfigurationException {
 		String finalName = "";
 		try {
 			finalName = (String) expressionEvaluator
 					.evaluate("${project.build.finalName}");
-			
+
 			String basePath = (String) expressionEvaluator
 					.evaluate("${plugins.plugin.basePath}");
-			
-			System.out.println("BasePath "+basePath);
-			 
+
+			System.out.println("BasePath " + basePath);
+
 		} catch (ExpressionEvaluationException e) {
 			throw new ComponentConfigurationException(
 					"There was a problem evaluating: ${project.build.finalName}",
@@ -112,40 +132,39 @@ public class IncludeProjectDependenciesComponentConfigurator extends
 	private List<String> retrieveCustomJars(
 			ExpressionEvaluator expressionEvaluator)
 			throws ComponentConfigurationException {
+		List<String> jarDirs = getJarFoldersFromConfig(expressionEvaluator);
 		List<String> paths = new ArrayList<String>();
-		File baseDir = getProjectBuildRoot(expressionEvaluator);
-		try {
-			System.out.println(baseDir.getCanonicalPath());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			paths.add(new File(baseDir, "WEB-INF/classes").getCanonicalPath());
-			paths.addAll(getJarsRecursively(new File(baseDir, "WEB-INF/lib")));
-		} catch (IOException e) {
-			throw new ComponentConfigurationException(
-					"There was a problem in setting classpath", e);
+		if (jarDirs.size() > 0) {
+			File baseDir = getProjectBuildRoot(expressionEvaluator);
+			try {
+				for (String jarDir : jarDirs) {
+					paths.addAll(getJarsRecursively(new File(baseDir, jarDir)));
+				}
+			} catch (IOException e) {
+				throw new ComponentConfigurationException(
+						"There was a problem in setting classpath", e);
+			}
 		}
 		return paths;
 	}
 
 	private List<String> getJarsRecursively(File root) throws IOException {
 		List<String> jars = new ArrayList<String>();
-		if (root.isDirectory()) {
-			for (File f : root.listFiles()) {
-				if (f.isDirectory()) {
-					jars.addAll(getJarsRecursively(f));
-				} else {
-					System.out.println(f.getName());
-					if (f.getName().endsWith(".jar")) {
-						jars.add(f.getCanonicalPath());
+		if (root.exists()) {
+			if (root.isDirectory()) {
+				for (File f : root.listFiles()) {
+					if (f.isDirectory()) {
+						jars.addAll(getJarsRecursively(f));
+					} else {
+						if (f.getName().endsWith(".jar")) {
+							jars.add(f.getCanonicalPath());
+						}
 					}
 				}
-			}
-		} else {
-			if (root.getName().endsWith(".jar")) {
-				jars.add(root.getCanonicalPath());
+			} else {
+				if (root.getName().endsWith(".jar")) {
+					jars.add(root.getCanonicalPath());
+				}
 			}
 		}
 		return jars;
