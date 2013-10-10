@@ -62,6 +62,7 @@ public class DocumenterMojo extends AbstractMojo {
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		
 		basePath = (basePath == null) ? "/rest/services" : basePath;
+		getLog().debug("Base Path "+basePath);
 		String[] classPaths = null;
 		try {
 			classPaths = getClassPaths();
@@ -74,6 +75,7 @@ public class DocumenterMojo extends AbstractMojo {
 		if(docOutDir.equals("restApidocs")){
 		docOutDir=baseDir+File.separator+docOutDir;
 		}
+		getLog().debug("Html File will be created in "+ docOutDir);
 		fileData = new FileDataCreation(basePath, classPaths, docOutDir);
 		try {
 			fileData.createData();
@@ -87,13 +89,13 @@ public class DocumenterMojo extends AbstractMojo {
 
 	private String[] getClassPaths() throws IOException {
 		
-		System.out.println("Biuild Directory "+buildDir);
+		getLog().debug("Biuild Directory "+buildDir);
 		 baseDir = new File(buildDir, finalName).getCanonicalPath();
 		List<String> classPaths = new ArrayList<String>();
-		classPaths
-				.add(buildDir.getCanonicalPath() + File.separator + "classes");
+		classPaths.add(buildDir.getCanonicalPath() + File.separator + "classes");
 		if(includeJarFolders!=null){
 		for (String jarFolder : includeJarFolders) {
+			getLog().debug("Adding jar folder path "+jarFolder+" to classpath to be scanned");
 			classPaths.add(baseDir + File.separator + jarFolder);
 		}
 		}

@@ -109,8 +109,6 @@ public class IncludeProjectDependenciesComponentConfigurator extends
 			String basePath = (String) expressionEvaluator
 					.evaluate("${plugins.plugin.basePath}");
 
-			System.out.println("BasePath " + basePath);
-
 		} catch (ExpressionEvaluationException e) {
 			throw new ComponentConfigurationException(
 					"There was a problem evaluating: ${project.build.finalName}",

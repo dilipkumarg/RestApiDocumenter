@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import sun.security.action.GetLongAction;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.imaginea.documenter.core.documenter.DataCreation;
@@ -15,6 +19,7 @@ import com.imaginea.documenter.core.model.ClassResponseEntity;
 import com.imaginea.documenter.plugin.docgen.ApiDocumenter;
 
 public class FileDataCreation extends DataCreation {
+	private static final Logger LOGGER =Logger.getLogger(FileDataCreation.class);
 	private final String MANIFEST_NAME = "apidocs";
 	private final String HTML_FILE_NAME = "apidocs.html";
 	private String docOutDirPath;
@@ -50,6 +55,7 @@ public class FileDataCreation extends DataCreation {
 		} finally {
 			os.close();
 		}
+		LOGGER.info("Html File created at "+htmlFile.getAbsolutePath());
 	}
 
 	private File createFile(File resourceDir, String resource) {
@@ -71,6 +77,7 @@ public class FileDataCreation extends DataCreation {
 			throws IOException {
 		File resFile = createFile(resourceDir, classRes.getResourcePath()
 				+ ".json");
+		LOGGER.debug("Json file creation started for  "+resFile.getAbsolutePath());
 		FileWriter fw = null;
 		try {
 			fw = new FileWriter(resFile);
@@ -79,6 +86,7 @@ public class FileDataCreation extends DataCreation {
 		} finally {
 			fw.close();
 		}
+		LOGGER.debug("Json file sucessfully created for file "+resFile.getAbsolutePath());
 
 	}
 
