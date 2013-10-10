@@ -101,7 +101,7 @@ public final class RestApiClassUtil {
 	public static Set<Class> getPathAnnotatedClasses(String[] classPath) {
 		LOGGER.debug("Searching got annotated classes in the locations " + classPath);
 		ScanningResourceConfig config = new ScanningResourceConfig();
-		 final File[] files = getFilesList(classPath);
+		final File[] files = getFilesList(classPath);
 		config.init(new FilesScanner(files));
 		Set<Class<?>> annotatedclasses = config.getClasses();
 		if(LOGGER.isDebugEnabled()){
