@@ -36,7 +36,7 @@ public class DocumenterMojo extends AbstractMojo {
 	/**
 	 * base path for resource
 	 * 
-	 * @parameter
+	 * @parameter default-value="http://localhost:8080/api"
 	 * @required
 	 */
 	private String basePath;
@@ -59,8 +59,6 @@ public class DocumenterMojo extends AbstractMojo {
 	String baseDir;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
-
-		basePath = (basePath == null) ? "http://localhost:8080/api" : basePath;
 		getLog().debug("Base Path " + basePath);
 		String[] classPaths = null;
 		try {
