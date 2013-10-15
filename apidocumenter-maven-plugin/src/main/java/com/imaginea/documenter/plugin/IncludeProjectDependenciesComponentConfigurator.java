@@ -77,6 +77,14 @@ public class IncludeProjectDependenciesComponentConfigurator extends
 		}
 	}
 
+	/**
+	 * This function will read the configuration from the pom and returns the
+	 * list of user specified jar folders
+	 * 
+	 * @param expressionEvaluator
+	 * @return
+	 * @throws ComponentConfigurationException
+	 */
 	private List<String> getJarFoldersFromConfig(
 			ExpressionEvaluator expressionEvaluator)
 			throws ComponentConfigurationException {
@@ -90,12 +98,12 @@ public class IncludeProjectDependenciesComponentConfigurator extends
 		}
 		Xpp3Dom jarFolders = mojoExec.getConfiguration().getChild(
 				JAR_CONFIG_ENTRY);
+		// if there is no jar folder specified it will returns the empty list
 		if (jarFolders != null) {
 			for (int i = 0; i < jarFolders.getChildCount(); i++) {
 				dirs.add(jarFolders.getChild(i).getValue());
 			}
 		}
-
 		return dirs;
 	}
 
@@ -105,9 +113,6 @@ public class IncludeProjectDependenciesComponentConfigurator extends
 		try {
 			finalName = (String) expressionEvaluator
 					.evaluate("${project.build.finalName}");
-
-			String basePath = (String) expressionEvaluator
-					.evaluate("${plugins.plugin.basePath}");
 
 		} catch (ExpressionEvaluationException e) {
 			throw new ComponentConfigurationException(
@@ -151,19 +156,12 @@ public class IncludeProjectDependenciesComponentConfigurator extends
 		if (root.exists()) {
 			if (root.isDirectory()) {
 				for (File f : root.listFiles()) {
-					if (f.isDirectory()) {
-						jars.addAll(getJarsRecursively(f));
-					} else {
-						if (f.getName().endsWith(".jar")) {
-							jars.add(f.getCanonicalPath());
-						}
-					}
+					jars.addAll(getJarsRecursively(f));
 				}
-			} else {
-				if (root.getName().endsWith(".jar")) {
-					jars.add(root.getCanonicalPath());
-				}
+			} else if (root.getName().endsWith(".jar")) {
+				jars.add(root.getCanonicalPath());
 			}
+
 		}
 		return jars;
 	}

@@ -8,8 +8,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import sun.security.action.GetLongAction;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.imaginea.documenter.core.documenter.DataCreation;
@@ -28,7 +26,6 @@ public class FileDataCreation extends DataCreation {
 	public FileDataCreation(String basePath, String[] classPaths,
 			String docOutDir) {
 		super(basePath, classPaths);
-		// this.docOutDirPath = getFilePath(docOutDir, ROOT_FOLDER);
 		this.docOutDirPath = docOutDir;
 		this.gson = new GsonBuilder().setPrettyPrinting().create();
 	}

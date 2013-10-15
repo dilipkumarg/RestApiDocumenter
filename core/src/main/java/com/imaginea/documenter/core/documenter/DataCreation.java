@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.imaginea.documenter.core.service.DelegatorService;
 
 public abstract class DataCreation {
-	//String base="D:/ProgramFiles/apache-tomcat-7.0.42/webapps/apiservice-1.0-SNAPSHOT";
 	protected String[] classPaths = new String[] {"/WEB-INF/lib","/WEB-INF/classes" };
 	protected String basePath;
 	protected DelegatorService dlService;

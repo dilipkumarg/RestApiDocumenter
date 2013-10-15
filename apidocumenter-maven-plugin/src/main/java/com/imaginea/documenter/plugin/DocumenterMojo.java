@@ -55,14 +55,13 @@ public class DocumenterMojo extends AbstractMojo {
 	 * @parameter
 	 */
 	private List<String> includeJarFolders;
-	
-	
+
 	String baseDir;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		
-		basePath = (basePath == null) ? "/rest/services" : basePath;
-		getLog().debug("Base Path "+basePath);
+
+		basePath = (basePath == null) ? "http://localhost:8080/api" : basePath;
+		getLog().debug("Base Path " + basePath);
 		String[] classPaths = null;
 		try {
 			classPaths = getClassPaths();
@@ -72,10 +71,10 @@ public class DocumenterMojo extends AbstractMojo {
 		}
 
 		FileDataCreation fileData;
-		if(docOutDir.equals("restApidocs")){
-		docOutDir=baseDir+File.separator+docOutDir;
+		if (docOutDir.equals("restApidocs")) {
+			docOutDir = baseDir + File.separator + docOutDir;
 		}
-		getLog().debug("Html File will be created in "+ docOutDir);
+		getLog().info("Html File will be created in " + docOutDir);
 		fileData = new FileDataCreation(basePath, classPaths, docOutDir);
 		try {
 			fileData.createData();
@@ -88,16 +87,20 @@ public class DocumenterMojo extends AbstractMojo {
 	}
 
 	private String[] getClassPaths() throws IOException {
-		
-		getLog().debug("Biuild Directory "+buildDir);
-		 baseDir = new File(buildDir, finalName).getCanonicalPath();
+		getLog().debug("Build Directory " + buildDir);
+		// making baseDir as target/project_name/
+		baseDir = new File(buildDir, finalName).getCanonicalPath();
 		List<String> classPaths = new ArrayList<String>();
-		classPaths.add(buildDir.getCanonicalPath() + File.separator + "classes");
-		if(includeJarFolders!=null){
-		for (String jarFolder : includeJarFolders) {
-			getLog().debug("Adding jar folder path "+jarFolder+" to classpath to be scanned");
-			classPaths.add(baseDir + File.separator + jarFolder);
-		}
+		// adding target/classes into the class paths
+		classPaths
+				.add(buildDir.getCanonicalPath() + File.separator + "classes");
+		if (includeJarFolders != null) {
+			for (String jarFolder : includeJarFolders) {
+				getLog().debug(
+						"Adding jar folder path " + jarFolder
+								+ " to classpath to be scanned");
+				classPaths.add(baseDir + File.separator + jarFolder);
+			}
 		}
 		return classPaths.toArray(new String[] {});
 
