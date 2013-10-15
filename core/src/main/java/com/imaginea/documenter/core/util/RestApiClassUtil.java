@@ -24,23 +24,23 @@ import com.sun.jersey.core.spi.scanning.FilesScanner;
 
 public final class RestApiClassUtil {
 
-	private static final Logger LOGGER = Logger.getLogger(RestApiClassUtil.class);
-
+	private static final Logger LOGGER = Logger
+			.getLogger(RestApiClassUtil.class);
 
 	/**
 	 * Maps wrapper {@code Class}es to their corresponding primitive types.
 	 */
 	private static final Map<Class<?>, Class<?>> wrapperPrimitiveMap = new HashMap<Class<?>, Class<?>>();
 	static {
-		
-		wrapperPrimitiveMap.put(Boolean.class,Boolean.TYPE );
-		wrapperPrimitiveMap.put(Byte.class,Byte.TYPE );
-		wrapperPrimitiveMap.put( Character.class,Character.TYPE);
-		wrapperPrimitiveMap.put(Short.class,Short.TYPE );
-		wrapperPrimitiveMap.put( Integer.class,Integer.TYPE);
-		wrapperPrimitiveMap.put(Long.class,Long.TYPE );
-		wrapperPrimitiveMap.put( Double.class,Double.TYPE);
-		wrapperPrimitiveMap.put(Float.class,Float.TYPE );
+
+		wrapperPrimitiveMap.put(Boolean.class, Boolean.TYPE);
+		wrapperPrimitiveMap.put(Byte.class, Byte.TYPE);
+		wrapperPrimitiveMap.put(Character.class, Character.TYPE);
+		wrapperPrimitiveMap.put(Short.class, Short.TYPE);
+		wrapperPrimitiveMap.put(Integer.class, Integer.TYPE);
+		wrapperPrimitiveMap.put(Long.class, Long.TYPE);
+		wrapperPrimitiveMap.put(Double.class, Double.TYPE);
+		wrapperPrimitiveMap.put(Float.class, Float.TYPE);
 		wrapperPrimitiveMap.put(Void.TYPE, Void.TYPE);
 	}
 
@@ -80,32 +80,34 @@ public final class RestApiClassUtil {
 		return wrapperPrimitiveMap.containsKey(type);
 	}
 
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Set<Class> getannotatedClasses(Class<? extends Annotation> ac, Set<Class<?>> allAnnotatedClasses) {
-		if(LOGGER.isDebugEnabled()){
-			LOGGER.debug("Searching for " + ac + " annotated classes");	
+	public static Set<Class> getannotatedClasses(
+			Class<? extends Annotation> ac, Set<Class<?>> allAnnotatedClasses) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Searching for " + ac + " annotated classes");
 		}
 		Set<Class> s = new HashSet<Class>();
 		for (Class c : allAnnotatedClasses)
 			if (c.isAnnotationPresent(ac))
 				s.add(c);
-		if(LOGGER.isDebugEnabled()){
-			LOGGER.debug("Found " + s.size() + " classes annotated with " + ac);	
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Found " + s.size() + " classes annotated with " + ac);
 		}
-		
+
 		return s;
 	}
 
 	@SuppressWarnings("rawtypes")
 	public static Set<Class> getPathAnnotatedClasses(String[] classPath) {
-		LOGGER.debug("Searching got annotated classes in the locations " + classPath);
+		LOGGER.debug("Searching got annotated classes in the locations "
+				+ classPath);
 		ScanningResourceConfig config = new ScanningResourceConfig();
 		final File[] files = getFilesList(classPath);
 		config.init(new FilesScanner(files));
 		Set<Class<?>> annotatedclasses = config.getClasses();
-		if(LOGGER.isDebugEnabled()){
-		LOGGER.debug("Total annotated classes found " + annotatedclasses.size());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Total annotated classes found "
+					+ annotatedclasses.size());
 		}
 		return getannotatedClasses(Path.class, annotatedclasses);
 	}
@@ -116,14 +118,14 @@ public final class RestApiClassUtil {
 	 */
 	private static File[] getFilesList(String[] classPath) {
 		final File[] files = new File[classPath.length];
-		  for (int i = 0;  i < classPath.length; i++) {
-	            files[i] = new File(classPath[i]);
-	        }
+		for (int i = 0; i < classPath.length; i++) {
+			files[i] = new File(classPath[i]);
+		}
 		return files;
 	}
-	
-/*	public static void main(String[] args) {
-		System.out.println("check");
-	}*/
+
+	/*
+	 * public static void main(String[] args) { System.out.println("check"); }
+	 */
 
 }

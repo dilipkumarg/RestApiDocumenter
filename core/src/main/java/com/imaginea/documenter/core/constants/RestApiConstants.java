@@ -4,6 +4,6 @@ public final class RestApiConstants {
 
 	public static final  String BASE_PATH_URL="base.path.url";
 	
-	public static final String CLASSPATHS="jar.files.path";
+	public static final String CLASSPATHS="jar.files.paths";
 	
 }
