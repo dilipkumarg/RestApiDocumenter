@@ -70,12 +70,11 @@ public class DocumenterMojo extends AbstractMojo {
 			return;
 		}
 
-		FileDataCreation fileData;
 		if (docOutDir.equals("restApidocs")) {
 			docOutDir = baseDir + File.separator + docOutDir;
 		}
 		getLog().info("Html File will be created in " + docOutDir);
-		fileData = new FileDataCreation(basePath, classPaths, docOutDir);
+		FileDataCreation fileData = new FileDataCreation(basePath, classPaths, docOutDir);
 		try {
 			fileData.createData();
 		} catch (ClassNotFoundException e) {
@@ -92,8 +91,7 @@ public class DocumenterMojo extends AbstractMojo {
 		baseDir = new File(buildDir, finalName).getCanonicalPath();
 		List<String> classPaths = new ArrayList<String>();
 		// adding target/classes into the class paths
-		classPaths
-				.add(buildDir.getCanonicalPath() + File.separator + "classes");
+		classPaths.add(buildDir.getCanonicalPath() + File.separator + "classes");
 		if (includeJarFolders != null) {
 			for (String jarFolder : includeJarFolders) {
 				getLog().debug(

@@ -46,7 +46,7 @@ public class WebDocumenterDelegate extends DataCreation {
 			apis.add(classDesc);
 		}
 		if(LOGGER.isDebugEnabled()){
-		LOGGER.debug("Total number of path list prepared " + apis.size());
+			LOGGER.debug("Total number of path list prepared " + apis.size());
 		}
 		apisInfo.setApis(apis);
 		return apisInfo;
@@ -65,7 +65,7 @@ public class WebDocumenterDelegate extends DataCreation {
 			pathJsonMap.put(classInfo.getResourcePath(), gson.toJson(classInfo));
 		}
 		if(LOGGER.isDebugEnabled()){
-		LOGGER.debug("Path Json Map Prepared Sucessfully, Total elements " + pathJsonMap.size());
+			LOGGER.debug("Path Json Map Prepared Sucessfully, Total elements " + pathJsonMap.size());
 		}
 	}
 

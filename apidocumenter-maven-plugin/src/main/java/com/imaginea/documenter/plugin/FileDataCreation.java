@@ -17,7 +17,8 @@ import com.imaginea.documenter.core.model.ClassResponseEntity;
 import com.imaginea.documenter.plugin.docgen.ApiDocumenter;
 
 public class FileDataCreation extends DataCreation {
-	private static final Logger LOGGER =Logger.getLogger(FileDataCreation.class);
+	private static final Logger LOGGER = Logger
+			.getLogger(FileDataCreation.class);
 	private final String MANIFEST_NAME = "apidocs";
 	private final String HTML_FILE_NAME = "apidocs.html";
 	private String docOutDirPath;
@@ -34,25 +35,15 @@ public class FileDataCreation extends DataCreation {
 	public void createData() throws ClassNotFoundException, IOException {
 		List<ClassResponseEntity> classResList = dlService.extractClassesInfo();
 		File outputDir = new File(docOutDirPath);
-		createDirIfExists(outputDir);
+		cleanAndCreateDir(outputDir);
 		dumpManifestFile(outputDir, createManifestObj(classResList));
 		dumpClasses(outputDir, classResList);
 		dumpHtmlFile(outputDir,
 				new ApiDocumenter(classResList, this.basePath).toMarkDown());
 	}
 
-	private void dumpHtmlFile(File outFile, String html) throws IOException {
-		File htmlFile = new File(outFile, HTML_FILE_NAME);
-		htmlFile.createNewFile();
-		FileWriter os = null;
-		try {
-			os = new FileWriter(htmlFile);
-			os.write(html);
-			os.flush();
-		} finally {
-			os.close();
-		}
-		LOGGER.info("Html File created at "+htmlFile.getAbsolutePath());
+	private void dumpHtmlFile(File baseDir, String html) throws IOException {
+		dumpToFile(baseDir, HTML_FILE_NAME, html);
 	}
 
 	private File createFile(File resourceDir, String resource) {
@@ -70,20 +61,42 @@ public class FileDataCreation extends DataCreation {
 		return new File(curResourceDir, resParts[resParts.length - 1]);
 	}
 
+	private void dumpToFile(File baseDir, String fileName, String data)
+			throws IOException {
+		File newFile = new File(baseDir, fileName);
+		newFile.createNewFile();
+		FileWriter writer = null;
+
+		try {
+			writer = new FileWriter(newFile);
+			writer.write(data);
+			writer.flush();
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
+		}
+		LOGGER.info("File created at " + newFile.getAbsolutePath());
+	}
+
 	private void dumpClass(File resourceDir, ClassResponseEntity classRes)
 			throws IOException {
 		File resFile = createFile(resourceDir, classRes.getResourcePath()
 				+ ".json");
-		LOGGER.debug("Json file creation started for  "+resFile.getAbsolutePath());
+		LOGGER.debug("Json file creation started for  "
+				+ resFile.getAbsolutePath());
 		FileWriter fw = null;
 		try {
 			fw = new FileWriter(resFile);
 			fw.write(gson.toJson(classRes, ClassResponseEntity.class));
 			fw.flush();
 		} finally {
-			fw.close();
+			if (fw != null) {
+				fw.close();
+			}
 		}
-		LOGGER.debug("Json file sucessfully created for file "+resFile.getAbsolutePath());
+		LOGGER.debug("Json file sucessfully created for file "
+				+ resFile.getAbsolutePath());
 
 	}
 
@@ -115,16 +128,8 @@ public class FileDataCreation extends DataCreation {
 
 	private void dumpManifestFile(File outFile, ApiInfo apiInfo)
 			throws IOException {
-		File manifFile = new File(outFile, MANIFEST_NAME + ".json");
-		manifFile.createNewFile();
-		FileWriter os = null;
-		try {
-			os = new FileWriter(manifFile);
-			os.write(gson.toJson(apiInfo));
-			os.flush();
-		} finally {
-			os.close();
-		}
+		dumpToFile(outFile, MANIFEST_NAME + ".json", gson.toJson(apiInfo));
+
 	}
 
 	private void deleteRecursively(File root) {
@@ -132,13 +137,12 @@ public class FileDataCreation extends DataCreation {
 			for (File f : root.listFiles()) {
 				deleteRecursively(f);
 			}
-			root.delete();
-		} else {
-			root.delete();
 		}
+		// deletes file and directory after recursively deleting files.
+		root.delete();
 	}
 
-	private boolean createDirIfExists(File f) {
+	private boolean cleanAndCreateDir(File f) {
 		if (f.exists()) {
 			deleteRecursively(f);
 		}
