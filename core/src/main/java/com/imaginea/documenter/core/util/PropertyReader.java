@@ -30,11 +30,18 @@ public final class PropertyReader {
 	public void init() throws IOException {
 		URL propUrl = this.getClass().getClassLoader().getResource(FILE_NAME);
 		InputStream resourceAsStream = null;
+		// trying to load properties file from the resources.
 		if (propUrl != null) {
-			resourceAsStream = new FileInputStream(propUrl.getPath());
-		} else {
-			resourceAsStream = this.getClass().getClassLoader()
-					.getResourceAsStream(FILE_NAME);
+			try {
+				resourceAsStream = new FileInputStream(propUrl.getPath());
+			} catch (IOException e) {
+				// even though custom prop file is not there, but still resource
+				// url contains jar files prop file address.
+				resourceAsStream = getPropFileFromJar();
+			}
+		} else { // if no properties file is there, then we are loading default
+					// properties from the jar file.
+			resourceAsStream = getPropFileFromJar();
 		}
 		if (resourceAsStream != null) {
 			try {
@@ -46,6 +53,10 @@ public final class PropertyReader {
 				}
 			}
 		}
+	}
+
+	private InputStream getPropFileFromJar() {
+		return this.getClass().getClassLoader().getResourceAsStream(FILE_NAME);
 	}
 
 	public String getProperty(String propName) {
